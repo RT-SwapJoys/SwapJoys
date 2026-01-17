@@ -6,7 +6,6 @@
 
 ## 📊 Authentication Flow Diagram
 
----
 
 ## 1. Company Registration Flow
 
