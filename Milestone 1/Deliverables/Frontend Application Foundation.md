@@ -260,6 +260,8 @@ Admin Panel ─────────┘     Data Display ──────�
                                                                        Points Service ───┘
 ```
 
+---
+
 ## Summary
 
 | Layer | Components |
@@ -269,8 +271,6 @@ Admin Panel ─────────┘     Data Display ──────�
 | State Management | Auth Context, User Context, Company Context, Points Context |
 | API Services | Auth Service, Company Service, Experience Service, Booking Service, Points Service |
 | External | Laravel Backend API |
-
----
 
 ---
 
