@@ -260,8 +260,6 @@ Admin Panel ─────────┘     Data Display ──────�
                                                                        Points Service ───┘
 ```
 
----
-
 ## Summary
 
 | Layer | Components |
