@@ -43,7 +43,7 @@ The platform now enables companies to:
 
 ## New Features
 
-### Landing Page
+### Landing Page (Additional)
 - Modern animated hero section with floating cards
 - Responsive design for all screen sizes (mobile, tablet, desktop)
 - Feature highlights (Welcome Points, QR Verification, Tax Reports)
