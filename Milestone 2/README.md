@@ -191,22 +191,6 @@ The platform now enables companies to:
 | API versioning not yet implemented |
 | Mobile app not included in MVP scope |
 
----
-
-## Next Milestone Preview
-
-**Milestone 3: Employee Onboarding & Roles (Features 2, 3)**
-
-- Employee list page
-- Add employee form
-- Email invitation system
-- Employee activation flow
-- Role assignment (Owner/Manager/Employee)
-- Role-based access control implementation
-- Role-based navigation and permissions
-
----
-
 <div align="center">
 
 **End of Version 1.1.0 Release Notes**
