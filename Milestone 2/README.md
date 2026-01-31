@@ -146,16 +146,16 @@ The platform now enables companies to:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/register` | Company registration |
-| POST | `/api/login` | User login |
-| POST | `/api/logout` | User logout |
-| GET | `/api/verify-email/{token}` | Email verification |
-| POST | `/api/resend-verification` | Resend verification email |
-| POST | `/api/password/forgot` | Request password reset |
-| POST | `/api/password/reset` | Reset password |
-| GET | `/api/company` | Get company profile |
-| PUT | `/api/company` | Update company profile |
-| POST | `/api/password/change` | Change password (authenticated) |
+| POST | `/api/auth/register` | Company registration |
+| POST | `/api/auth/login` | User login |
+| POST | `/api/auth/logout` | User logout |
+| POST | `/api/auth/verify-email` | Email verification (token in body) |
+| POST | `/api/auth/resend-verification` | Resend verification email |
+| POST | `/api/auth/forgot-password` | Request password reset |
+| POST | `/api/auth/reset-password` | Reset password |
+| GET | `/api/company/profile` | Get company profile |
+| PUT | `/api/company/profile` | Update company profile |
+| POST | `/api/auth/change-password` | Change password (authenticated) |
 
 ---
 
