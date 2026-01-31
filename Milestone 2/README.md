@@ -191,6 +191,8 @@ The platform now enables companies to:
 | API versioning not yet implemented |
 | Mobile app not included in MVP scope |
 
+---
+
 <div align="center">
 
 **End of Version 1.1.0 Release Notes**
