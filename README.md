@@ -1,7 +1,7 @@
 # SwapJoys Platform MVP
 
 ![SwapJoys](https://img.shields.io/badge/SwapJoys-Platform-6366f1)
-![Version](https://img.shields.io/badge/version-1.0.0--M1-blue)
+![Version](https://img.shields.io/badge/version-1.1.0--M2-blue)
 ![Status](https://img.shields.io/badge/status-In%20Development-yellow)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
@@ -114,15 +114,22 @@ SwapJoys/
 ├── Milestone 1/                    # Foundation Setup
 │   ├── Documents/
 │   │   ├── Release-Notes-M1.md
-│   │   ├── Task-Report-M1.xlsx
+│   │   ├── Task-Report-M1.pdf
 │   │   └── Database-Schema.md
 │   ├── Designs/
 │   │   ├── Platform-Flow-Diagram.md
 │   │   └── UI-Dashboard-Design.html
 │   └── Database/
 │       └── migrations/
-├── Milestone 2/                    # Company Registration (Coming)
-├── Milestone 3/                    # Employee Onboarding (Coming)
+├── Milestone 2/                    # Company Registration
+│   ├── Documents/
+│   │   ├── Release-Notes-M2.md
+│   │   ├── Task-Report-M2.pdf
+│   │   └── User-Journey-Map-M2.pdf
+│   └── Designs/
+│       ├── HTML-CSS-Templates.html
+│       └── Landing-Page.html
+├── Milestone 3/                    # Employee Onboarding (Next)
 ├── Milestone 4/                    # Experience Marketplace (Coming)
 ├── Milestone 5/                    # Booking & QR (Coming)
 ├── Milestone 6/                    # Points System (Coming)
@@ -138,8 +145,8 @@ SwapJoys/
 | Milestone | Weeks | Duration | Features | Status |
 |-----------|-------|----------|----------|--------|
 | **M1** | 1-2 | 2 weeks | Foundation Setup | ✅ Complete |
-| **M2** | 3-4 | 2 weeks | Company Registration | 🔄 Next |
-| **M3** | 5-6 | 2 weeks | Employee Onboarding, Roles | ⏳ Planned |
+| **M2** | 3-4 | 2 weeks | Company Registration | ✅ Complete |
+| **M3** | 5-6 | 2 weeks | Employee Onboarding, Roles | 🔄 Next |
 | **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | ⏳ Planned |
 | **M5** | 9-10 | 2 weeks | Booking, QR Verification, Status | ⏳ Planned |
 | **M6** | 11-12 | 2 weeks | Points System, Balance, Override | ⏳ Planned |
@@ -167,7 +174,7 @@ SwapJoys/
 
 ```bash
 # Clone repository
-git clone https://github.com/rifatkamal/SwapJoys.git
+git clone https://github.com/RT-SwapJoys/SwapJoys.git
 cd SwapJoys
 
 # Install dependencies
