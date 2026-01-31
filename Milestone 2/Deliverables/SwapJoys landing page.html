@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapJoys - Employee Experience Exchange Platform</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      /* Matched to your dashboard */
+      --primary: #8b6cff;
+      --primary-dark: #7c5cfc;
+      --primary-light: #a78bfa;
+      --sidebar-dark: #1e2139;
+      --dark: #1e2139;
+      --light: #ffffff;
+      --gray: #6b7280;
+      --gray-light: #F4F6F9;
+      --text-dark: #1f2937;
+      --green-accent: #10b981;
+    }
+    
+    html, body {
+      height: 100%;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+    
+    .page-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Animated Background Elements */
+    .bg-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    
+    .shape-1 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(139, 108, 255, 0.1) 0%, transparent 70%);
+      top: -200px;
+      right: -150px;
+      animation: pulse 8s ease-in-out infinite;
+    }
+    
+    .shape-2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.08) 0%, transparent 70%);
+      bottom: -200px;
+      left: -150px;
+      animation: pulse 10s ease-in-out infinite reverse;
+    }
+    
+    .shape-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(139, 108, 255, 0.06) 0%, transparent 70%);
+      top: 35%;
+      left: 25%;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.3; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-30px) translateX(20px); }
+    }
+    
+    /* Navigation */
+    nav {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      position: relative;
+      background: var(--light);
+      border-bottom: 1px solid rgba(139, 108, 255, 0.1);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 22px;
+      color: white;
+      animation: logoFloat 3s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .logo-text span {
+      color: var(--primary);
+    }
+    
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .btn {
+      padding: 12px 32px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: rgba(139, 108, 255, 0.08);
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      border: 2px solid var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(139, 108, 255, 0.35);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 108, 255, 0.5);
+      background: var(--primary-dark);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      position: relative;
+      z-index: 5;
+      background: #F4F6F9;
+    }
+    
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1400px;
+      gap: 80px;
+    }
+    
+    .hero-text {
+      flex: 1;
+      max-width: 650px;
+    }
+    
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(139, 108, 255, 0.1);
+      border: 1px solid rgba(139, 108, 255, 0.2);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 16px;
+      color: var(--primary-dark);
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease;
+    }
+    
+    .tagline i {
+      font-size: 14px;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-text h1 {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 25px;
+      color: var(--dark);
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+    
+    .hero-text h1 span {
+      color: var(--primary);
+    }
+    
+    .hero-text p {
+      font-size: 20px;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    
+    .hero-features {
+      display: flex;
+      gap: 35px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.3s both;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(139, 108, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    
+    .feature-text {
+      font-size: 16px;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+    
+    /* Hero Visual */
+    .hero-visual {
+      flex: 1;
+      max-width: 550px;
+      position: relative;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+    
+    .visual-container {
+      position: relative;
+      width: 100%;
+      height: 480px;
+    }
+    
+    /* Floating Cards */
+    .float-card {
+      position: absolute;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(30, 33, 57, 0.08);
+      border: 1px solid rgba(139, 108, 255, 0.1);
+    }
+    
+    .card-main {
+      width: 320px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      animation: cardFloat 5s ease-in-out infinite;
+    }
+    
+    @keyframes cardFloat {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-15px); }
+    }
+    
+    .card-main-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    
+    .card-main-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .card-main-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .card-main-sub {
+      font-size: 14px;
+      color: var(--gray);
+    }
+    
+    .card-main-content {
+      background: var(--gray-light);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .points-display {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .points-label {
+      font-size: 14px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+    
+    .card-small {
+      padding: 20px 22px;
+    }
+    
+    .card-top-left {
+      top: 10px;
+      left: -20px;
+      animation: floatLeft 6s ease-in-out infinite;
+    }
+    
+    @keyframes floatLeft {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-20px) rotate(0deg); }
+    }
+    
+    .card-top-right {
+      top: -10px;
+      right: -20px;
+      animation: floatRight 7s ease-in-out infinite;
+    }
+    
+    @keyframes floatRight {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-25px) rotate(0deg); }
+    }
+    
+    .card-bottom {
+      bottom: 10px;
+      left: 10px;
+      animation: floatBottom 5.5s ease-in-out infinite;
+    }
+    
+    @keyframes floatBottom {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-18px) rotate(-2deg); }
+    }
+    
+    .mini-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(139, 108, 255, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .card-small-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    
+    .card-small-text {
+      font-size: 13px;
+      color: var(--gray);
+      margin-top: 3px;
+    }
+    
+    /* Balance Badge Style - matching your dashboard */
+    .balance-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 10px 18px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: floatRight 6s ease-in-out infinite;
+    }
+    
+    .balance-badge i {
+      color: var(--green-accent);
+      font-size: 16px;
+    }
+    
+    .balance-badge span {
+      color: var(--green-accent);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 20px 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      position: relative;
+      background: var(--light);
+      border-top: 1px solid rgba(139, 108, 255, 0.1);
+    }
+    
+    footer p {
+      font-size: 14px;
+      color: var(--gray);
+      text-align: center;
+    }
+    
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    /* RESPONSIVE STYLES */
+    
+    @media (max-width: 1400px) {
+      .hero-container {
+        gap: 60px;
+      }
+      .hero-text h1 {
+        font-size: 56px;
+      }
+      .visual-container {
+        height: 420px;
+      }
+      .card-main {
+        width: 280px;
+      }
+    }
+    
+    @media (max-width: 1200px) {
+      nav {
+        padding: 18px 40px;
+      }
+      .main-content {
+        padding: 50px 40px;
+      }
+      .hero-text h1 {
+        font-size: 48px;
+      }
+      .hero-text p {
+        font-size: 18px;
+      }
+      .tagline {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+      .hero-visual {
+        max-width: 480px;
+      }
+      .visual-container {
+        height: 380px;
+      }
+      .card-main {
+        width: 260px;
+        padding: 20px;
+      }
+      .card-main-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 20px;
+      }
+      .card-main-title {
+        font-size: 17px;
+      }
+      .points-display {
+        font-size: 36px;
+      }
+      .card-small {
+        padding: 16px 18px;
+      }
+      .mini-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+      }
+      .card-small-title {
+        font-size: 14px;
+      }
+      .card-small-text {
+        font-size: 12px;
+      }
+      footer {
+        padding: 18px 40px;
+      }
+    }
+    
+    @media (max-width: 1024px) {
+      nav {
+        padding: 15px 30px;
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
+      }
+      .logo-text {
+        font-size: 22px;
+      }
+      .btn {
+        padding: 10px 24px;
+        font-size: 14px;
+      }
+      .main-content {
+        padding: 40px 30px;
+      }
+      .hero-container {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+      }
+      .hero-text {
+        max-width: 100%;
+      }
+      .hero-text h1 {
+        font-size: 44px;
+      }
+      .tagline {
+        font-size: 14px;
+      }
+      .hero-features {
+        justify-content: center;
+        gap: 25px;
+      }
+      .hero-visual {
+        max-width: 420px;
+        width: 100%;
+      }
+      .visual-container {
+        height: 340px;
+      }
+      .card-main {
+        width: 240px;
+        padding: 18px;
+      }
+      .card-top-left {
+        left: 0;
+        top: 15px;
+      }
+      .card-top-right {
+        right: 0;
+        top: 0;
+      }
+      .card-bottom {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+      }
+      @keyframes floatBottom {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-15px); }
+      }
+      .balance-badge {
+        display: none;
+      }
+      footer {
+        padding: 15px 30px;
+      }
+      footer p {
+        font-size: 13px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      nav {
+        padding: 12px 20px;
+      }
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        border-radius: 8px;
+      }
+      .logo-text {
+        font-size: 20px;
+      }
+      .nav-buttons {
+        gap: 10px;
+      }
+      .btn {
+        padding: 9px 18px;
+        font-size: 13px;
+        border-radius: 8px;
+      }
+      .main-content {
+        padding: 30px 20px;
+      }
+      .hero-text h1 {
+        font-size: 36px;
+        margin-bottom: 18px;
+      }
+      .hero-text p {
+        font-size: 16px;
+        margin-bottom: 28px;
+      }
+      .tagline {
+        font-size: 12px;
+        padding: 8px 16px;
+        margin-bottom: 22px;
+      }
+      .hero-features {
+        gap: 18px;
+      }
+      .feature-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 17px;
+      }
+      .feature-text {
+        font-size: 14px;
+      }
+      .hero-visual {
+        max-width: 360px;
+      }
+      .visual-container {
+        height: 300px;
+      }
+      .card-main {
+        width: 200px;
+        padding: 14px;
+      }
+      .card-main-header {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .card-main-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+      }
+      .card-main-title {
+        font-size: 14px;
+      }
+      .card-main-sub {
+        font-size: 11px;
+      }
+      .card-main-content {
+        padding: 14px;
+      }
+      .points-display {
+        font-size: 28px;
+      }
+      .points-label {
+        font-size: 11px;
+      }
+      .card-small {
+        padding: 12px 14px;
+      }
+      .mini-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .card-small-title {
+        font-size: 12px;
+      }
+      .card-small-text {
+        font-size: 10px;
+      }
+      .shape-1 {
+        width: 400px;
+        height: 400px;
+      }
+      .shape-2 {
+        width: 350px;
+        height: 350px;
+      }
+      footer {
+        padding: 12px 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      nav {
+        padding: 12px 15px;
+      }
+      .logo-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+      }
+      .logo-text {
+        font-size: 18px;
+      }
+      .logo {
+        gap: 8px;
+      }
+      .nav-buttons {
+        gap: 8px;
+      }
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+        border-radius: 7px;
+      }
+      .main-content {
+        padding: 25px 15px;
+        align-items: flex-start;
+      }
+      .hero-container {
+        gap: 30px;
+      }
+      .tagline {
+        font-size: 11px;
+        padding: 7px 12px;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+      .tagline i {
+        font-size: 10px;
+      }
+      .hero-text h1 {
+        font-size: 30px;
+        margin-bottom: 14px;
+      }
+      .hero-text p {
+        font-size: 14px;
+        margin-bottom: 22px;
+        line-height: 1.6;
+      }
+      .hero-features {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+      }
+      .feature-item {
+        gap: 10px;
+      }
+      .feature-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+        border-radius: 9px;
+      }
+      .feature-text {
+        font-size: 13px;
+      }
+      .hero-visual {
+        max-width: 100%;
+      }
+      .visual-container {
+        height: 260px;
+      }
+      .float-card {
+        border-radius: 12px;
+      }
+      .card-main {
+        width: 170px;
+        padding: 12px;
+      }
+      .card-main-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .card-main-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+        border-radius: 8px;
+      }
+      .card-main-title {
+        font-size: 13px;
+      }
+      .card-main-sub {
+        font-size: 10px;
+      }
+      .card-main-content {
+        padding: 10px;
+        border-radius: 8px;
+      }
+      .points-display {
+        font-size: 24px;
+      }
+      .points-label {
+        font-size: 10px;
+      }
+      .card-small {
+        padding: 10px 12px;
+      }
+      .mini-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+        margin-bottom: 5px;
+        border-radius: 6px;
+      }
+      .card-small-title {
+        font-size: 11px;
+      }
+      .card-small-text {
+        font-size: 9px;
+      }
+      .card-top-left {
+        left: -5px;
+        top: 25px;
+      }
+      .card-top-right {
+        right: -5px;
+        top: 5px;
+      }
+      footer {
+        padding: 12px 15px;
+      }
+      footer p {
+        font-size: 11px;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .hero-text h1 {
+        font-size: 26px;
+      }
+      .hero-text p {
+        font-size: 13px;
+      }
+      .card-main {
+        width: 150px;
+        padding: 10px;
+      }
+      .points-display {
+        font-size: 22px;
+      }
+      .card-small {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    
+    <!-- Navigation - Dark like your sidebar -->
+    <nav>
+      <a href="#" class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">Swap<span>Joys</span></div>
+      </a>
+      <div class="nav-buttons">
+        <a href="#login" class="btn btn-outline">Login</a>
+        <a href="#register" class="btn btn-primary">Register</a>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="hero-container">
+        <div class="hero-text">
+          <div class="tagline">
+            <i class="fas fa-sparkles"></i>
+            Employee Experience Exchange Platform
+          </div>
+          <h1>Swap <span>Experiences</span>, Boost Employee <span>Wellness</span></h1>
+          <p>Connect your company with others to exchange unique employee experiences. Dining, wellness, entertainment – all through a simple points-based system.</p>
+          <div class="hero-features">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-gift"></i></div>
+              <span class="feature-text">50 Welcome Points</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+              <span class="feature-text">QR Verification</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fas fa-file-invoice"></i></div>
+              <span class="feature-text">Tax Reports</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="visual-container">
+            <!-- Balance Badge - matching your dashboard style -->
+            <div class="balance-badge">
+              <i class="fas fa-coins"></i>
+              <span>Balance: 50 Points</span>
+            </div>
+            
+            <!-- Top Left Card -->
+            <div class="float-card card-small card-top-left">
+              <div class="mini-icon"><i class="fas fa-utensils"></i></div>
+              <div class="card-small-title">Dining Experience</div>
+              <div class="card-small-text">Restaurant & Café</div>
+            </div>
+            
+            <!-- Top Right Card -->
+            <div class="float-card card-small card-top-right">
+              <div class="mini-icon"><i class="fas fa-spa"></i></div>
+              <div class="card-small-title">Wellness Package</div>
+              <div class="card-small-text">Spa & Relaxation</div>
+            </div>
+            
+            <!-- Main Center Card -->
+            <div class="float-card card-main">
+              <div class="card-main-header">
+                <div class="card-main-icon"><i class="fas fa-building"></i></div>
+                <div>
+                  <div class="card-main-title">Company Balance</div>
+                  <div class="card-main-sub">Your exchange points</div>
+                </div>
+              </div>
+              <div class="card-main-content">
+                <div class="points-display">250</div>
+                <div class="points-label">Available Points</div>
+              </div>
+            </div>
+            
+            <!-- Bottom Card -->
+            <div class="float-card card-small card-bottom">
+              <div class="mini-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="card-small-title">Experience Redeemed</div>
+              <div class="card-small-text">QR Verified ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 SwapJoys. Employee Experience Exchange Platform </p>
+    </footer>
+  </div>
+</body>
+</html>
