@@ -158,7 +158,7 @@ SwapJoys/
 
 ---
 
-### Milestone 2 — Additional Delivered
+## Milestone 2 — Additional Delivered
 
 The following features were delivered beyond the original M2 scope:
 
