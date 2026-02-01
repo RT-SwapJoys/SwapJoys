@@ -158,6 +158,22 @@ SwapJoys/
 
 ---
 
+### Milestone 2 — Additional Deliverables
+
+The following features were delivered beyond the original M2 scope:
+
+| Feature | Description |
+|---------|-------------|
+| Terms & Conditions Page | Legal terms acceptance page |
+| Privacy Policy Page | GDPR-compliant privacy information |
+| Settings Page | User settings with change password |
+| Dashboard Layout | Sidebar navigation structure |
+| Protected Routes | Redirect system for unverified users |
+| Language Toggle | Norwegian/English language switch |
+| Resend Verification | Resend verification email functionality |
+
+---
+
 ## Installation
 
 > ⚠️ **Note:** Installation instructions will be updated as development progresses.
