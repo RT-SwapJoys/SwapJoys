@@ -483,14 +483,6 @@
 
 ---
 
-## Design Files
-
-| File | Description |
-|------|-------------|
-| [M3-HTML-CSS-Designs.html](./M3-HTML-CSS-Designs.html) | Interactive HTML/CSS design templates |
-
----
-
 **Prepared by:** Rebing Tech  
 **Project:** SwapJoys Platform MVP  
 **Milestone:** 3 of 8
