@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapJoys - Milestone 3 HTML/CSS Designs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; min-height: 100vh; }
+    
+    .design-nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); z-index: 1000; flex-wrap: wrap; }
+    .design-nav-title { font-weight: 700; color: #1f2937; font-size: 13px; margin-right: 8px; }
+    .design-nav-btn { padding: 6px 12px; border: none; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: #f3f4f6; color: #4b5563; white-space: nowrap; }
+    .design-nav-btn:hover { background: #e5e7eb; }
+    .design-nav-btn.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    
+    .screen { display: none; padding-top: 60px; min-height: 100vh; }
+    .screen.active { display: block; }
+    
+    .sidebar { width: 250px; background: linear-gradient(180deg, #1a1f36 0%, #252b48 100%); min-height: calc(100vh - 60px); position: fixed; left: 0; top: 60px; padding: 20px 0; }
+    .logo { padding: 0 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; font-weight: 700; }
+    .logo-text { color: #fff; font-size: 20px; font-weight: 700; }
+    .logo-text span { color: #8b5cf6; }
+    .nav-section { padding: 0 12px; margin-bottom: 20px; }
+    .nav-label { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; margin-bottom: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-item.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    .nav-item i { width: 20px; text-align: center; }
+    
+    .main { margin-left: 250px; padding: 24px; }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #1f2937; }
+    .page-subtitle { color: #6b7280; font-size: 14px; margin-top: 4px; }
+    
+    .btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+    .btn-secondary { background: #f3f4f6; color: #374151; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-danger { background: #fee2e2; color: #dc2626; }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-success { background: #dcfce7; color: #16a34a; }
+    .btn-success:hover { background: #bbf7d0; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+    
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-value { font-size: 28px; font-weight: 700; color: #1f2937; }
+    .stat-label { color: #6b7280; font-size: 13px; margin-top: 4px; }
+    .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
+    .stat-icon.blue { background: rgba(99,102,241,0.1); color: #6366f1; }
+    .stat-icon.green { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .stat-icon.orange { background: rgba(249,115,22,0.1); color: #f97316; }
+    .stat-icon.purple { background: rgba(168,85,247,0.1); color: #a855f7; }
+    .stat-icon.red { background: rgba(239,68,68,0.1); color: #ef4444; }
+    
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-size: 16px; font-weight: 600; color: #1f2937; }
+    .card-body { padding: 20px 24px; }
+    
+    .tabs { display: flex; gap: 8px; }
+    .tab { padding: 8px 16px; border: 2px solid #e5e7eb; background: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .tab:hover { border-color: #6366f1; color: #6366f1; }
+    .tab.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); border-color: #6366f1; color: #fff; }
+    
+    .filters { display: flex; gap: 12px; align-items: center; }
+    .search-box { position: relative; }
+    .search-box input { padding: 10px 14px 10px 38px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; width: 240px; transition: all 0.2s; }
+    .search-box input:focus { outline: none; border-color: #6366f1; }
+    .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .filter-select { padding: 10px 32px 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; cursor: pointer; }
+    
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f3f4f6; }
+    .table td { padding: 16px; border-bottom: 1px solid #f3f4f6; }
+    .table tr:hover { background: #f9fafb; }
+    .table tr:last-child td { border-bottom: none; }
+    
+    .employee-info { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: #fff; }
+    .avatar.purple { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .avatar.blue { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+    .avatar.green { background: linear-gradient(135deg, #22c55e, #4ade80); }
+    .avatar.orange { background: linear-gradient(135deg, #f97316, #fb923c); }
+    .avatar.gray { background: linear-gradient(135deg, #6b7280, #9ca3af); }
+    .employee-name { font-weight: 600; color: #1f2937; font-size: 14px; }
+    .employee-email { color: #6b7280; font-size: 13px; }
+    
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .badge-owner { background: #f3e8ff; color: #7c3aed; }
+    .badge-manager { background: #dbeafe; color: #2563eb; }
+    .badge-employee { background: #f3f4f6; color: #4b5563; }
+    .badge-active { background: #dcfce7; color: #16a34a; }
+    .badge-pending { background: #ffedd5; color: #ea580c; }
+    .badge-inactive { background: #f3f4f6; color: #6b7280; }
+    .badge-deleted { background: #fee2e2; color: #dc2626; }
+    .badge i { font-size: 8px; }
+    
+    .actions { display: flex; gap: 8px; }
+    .action-btn { width: 32px; height: 32px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #f3f4f6; color: #6b7280; }
+    .action-btn:hover { background: #e5e7eb; color: #374151; }
+    .action-btn.view:hover { background: #dbeafe; color: #2563eb; }
+    .action-btn.edit:hover { background: #dcfce7; color: #16a34a; }
+    .action-btn.resend:hover { background: #e0e7ff; color: #6366f1; }
+    .action-btn.delete:hover { background: #fee2e2; color: #dc2626; }
+    .action-btn.restore:hover { background: #dcfce7; color: #16a34a; }
+    
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1001; padding: 20px; }
+    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal-header { padding: 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 18px; font-weight: 700; color: #1f2937; display: flex; align-items: center; gap: 10px; }
+    .modal-close { width: 36px; height: 36px; border: none; background: #f3f4f6; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s; }
+    .modal-close:hover { background: #e5e7eb; color: #374151; }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 20px 24px; border-top: 1px solid #f3f4f6; display: flex; justify-content: flex-end; gap: 12px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .form-label .required { color: #ef4444; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; }
+    .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    .form-input:disabled { background: #f3f4f6; cursor: not-allowed; }
+    .form-select { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 16px center; appearance: none; cursor: pointer; }
+    .form-input-icon { position: relative; }
+    .form-input-icon i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .form-input-icon input { padding-left: 42px; }
+    .form-hint { font-size: 12px; color: #6b7280; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+    
+    .role-info { background: #f0f9ff; border: 2px solid #bae6fd; border-radius: 12px; padding: 16px; margin-top: 12px; }
+    .role-info-title { font-size: 13px; font-weight: 600; color: #0369a1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .role-info-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #0c4a6e; margin-bottom: 6px; }
+    .role-info-item:last-child { margin-bottom: 0; }
+    .role-info-item i.fa-check { color: #22c55e; }
+    .role-info-item i.fa-times { color: #ef4444; }
+    
+    .detail-header { background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 16px 16px 0 0; padding: 24px; display: flex; align-items: center; gap: 16px; }
+    .detail-avatar { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #fff; }
+    .detail-info h2 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .detail-info p { color: rgba(255,255,255,0.85); font-size: 14px; margin-bottom: 8px; }
+    .detail-badges { display: flex; gap: 8px; }
+    .detail-badge { padding: 4px 10px; background: rgba(255,255,255,0.2); border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .detail-item { padding: 12px; background: #f9fafb; border-radius: 10px; }
+    .detail-item label { display: block; font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .detail-item p { font-size: 14px; font-weight: 600; color: #1f2937; }
+    
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { width: 80px; height: 80px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: #9ca3af; }
+    .empty-title { font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+    .empty-text { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+    
+    .auth-wrapper { min-height: calc(100vh - 60px); display: flex; align-items: center; justify-content: center; padding: 40px 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%); }
+    .auth-card { background: #fff; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.15); width: 100%; max-width: 480px; overflow: hidden; }
+    .auth-header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 32px; text-align: center; }
+    .auth-logo { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 14px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; font-weight: 700; }
+    .auth-title { color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .auth-subtitle { color: rgba(255,255,255,0.85); font-size: 14px; }
+    .auth-body { padding: 32px; }
+    
+    .info-box { background: #f0f9ff; border: 2px solid #bae6fd; border-radius: 12px; padding: 16px; margin-bottom: 24px; text-align: center; }
+    .info-box.green { background: #dcfce7; border-color: #86efac; }
+    .info-box-label { font-size: 12px; color: #0369a1; margin-bottom: 4px; }
+    .info-box.green .info-box-label { color: #166534; }
+    .info-box-value { font-size: 16px; font-weight: 700; color: #0c4a6e; }
+    .info-box.green .info-box-value { color: #14532d; }
+    
+    .role-display { background: #f3f4f6; border-radius: 12px; padding: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+    .role-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
+    .role-label { font-size: 12px; color: #6b7280; }
+    .role-name { font-size: 16px; font-weight: 700; color: #1f2937; }
+    
+    .password-req { background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-top: 16px; }
+    .password-req-title { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 12px; }
+    .req-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #6b7280; }
+    .req-item:last-child { margin-bottom: 0; }
+    .req-item .circle { width: 18px; height: 18px; border: 2px solid #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .req-item .circle i { display: none; font-size: 10px; color: #fff; }
+    .req-item.valid .circle { background: #22c55e; border-color: #22c55e; }
+    .req-item.valid .circle i { display: block; }
+    .req-item.valid { color: #16a34a; }
+    
+    .success-icon { width: 100px; height: 100px; background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 48px; }
+    .success-title { font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+    .success-text { color: #6b7280; font-size: 15px; margin-bottom: 24px; }
+    
+    .email-preview { background: #fff; border: 2px solid #e5e7eb; border-radius: 16px; overflow: hidden; max-width: 420px; margin: 0 auto; }
+    .email-header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 32px; text-align: center; }
+    .email-logo { width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; font-weight: 700; }
+    .email-title { color: #fff; font-size: 22px; font-weight: 700; }
+    .email-body { padding: 28px; }
+    .email-text { color: #4b5563; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+    .email-info-box { background: #f9fafb; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+    .email-info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+    .email-info-row:not(:last-child) { border-bottom: 1px solid #e5e7eb; }
+    .email-info-label { font-size: 13px; color: #6b7280; }
+    .email-info-value { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .email-btn { display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; text-align: center; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; margin-bottom: 16px; }
+    .email-footer { text-align: center; font-size: 12px; color: #9ca3af; padding-top: 16px; border-top: 1px solid #e5e7eb; }
+    
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px; }
+    .page-btn { width: 36px; height: 36px; border: 2px solid #e5e7eb; background: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: #4b5563; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover { border-color: #6366f1; color: #6366f1; }
+    .page-btn.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); border-color: #6366f1; color: #fff; }
+    
+    .deleted-banner { background: #fef2f2; border: 2px solid #fecaca; border-radius: 12px; padding: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .deleted-banner i { font-size: 20px; color: #dc2626; }
+    .deleted-banner-text { color: #991b1b; font-size: 14px; }
+    .deleted-banner-text strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="design-nav">
+    <span class="design-nav-title">M3 Designs:</span>
+    <button class="design-nav-btn active" onclick="showScreen(0)">1. Employee List</button>
+    <button class="design-nav-btn" onclick="showScreen(1)">2. Add Employee</button>
+    <button class="design-nav-btn" onclick="showScreen(2)">3. View Employee</button>
+    <button class="design-nav-btn" onclick="showScreen(3)">4. Edit Employee</button>
+    <button class="design-nav-btn" onclick="showScreen(4)">5. Deleted Employees</button>
+    <button class="design-nav-btn" onclick="showScreen(5)">6. Invitation Email</button>
+    <button class="design-nav-btn" onclick="showScreen(6)">7. Account Activation</button>
+    <button class="design-nav-btn" onclick="showScreen(7)">8. Activation Success</button>
+    <button class="design-nav-btn" onclick="showScreen(8)">9. Empty State</button>
+  </div>
+
+  <!-- Screen 1: Employee List -->
+  <div class="screen active" id="screen0">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item active"><i class="fas fa-users"></i> Employees</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Employees</h1><p class="page-subtitle">Manage your company employees and their roles</p></div>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Employee</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-users"></i></div><div class="stat-value">18</div><div class="stat-label">Total Employees</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div class="stat-value">15</div><div class="stat-label">Active</div></div>
+        <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-clock"></i></div><div class="stat-value">2</div><div class="stat-label">Pending</div></div>
+        <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-user-tie"></i></div><div class="stat-value">3</div><div class="stat-label">Managers</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span class="card-title">All Employees</span>
+            <div class="tabs">
+              <span class="tab active">Active</span>
+              <span class="tab">Deleted</span>
+            </div>
+          </div>
+          <div class="filters">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search employees..."></div>
+            <select class="filter-select"><option>All Roles</option><option>Owner</option><option>Manager</option><option>Employee</option></select>
+            <select class="filter-select"><option>All Status</option><option>Active</option><option>Pending</option><option>Inactive</option></select>
+          </div>
+        </div>
+        <table class="table">
+          <thead><tr><th>Employee</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="employee-info"><div class="avatar purple">ST</div><div><div class="employee-name">Selim Tesfamariam</div><div class="employee-email">selim@company.com</div></div></div></td>
+              <td><span class="badge badge-owner"><i class="fas fa-crown"></i> Owner</span></td>
+              <td><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></td>
+              <td>Jan 15, 2026</td>
+              <td><div class="actions"><button class="action-btn view" title="View"><i class="fas fa-eye"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div class="employee-info"><div class="avatar blue">JS</div><div><div class="employee-name">Jane Smith</div><div class="employee-email">jane@company.com</div></div></div></td>
+              <td><span class="badge badge-manager"><i class="fas fa-user-tie"></i> Manager</span></td>
+              <td><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></td>
+              <td>Jan 20, 2026</td>
+              <td><div class="actions"><button class="action-btn view" title="View"><i class="fas fa-eye"></i></button><button class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button><button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div class="employee-info"><div class="avatar orange">BW</div><div><div class="employee-name">Bob Wilson</div><div class="employee-email">bob@company.com</div></div></div></td>
+              <td><span class="badge badge-employee"><i class="fas fa-user"></i> Employee</span></td>
+              <td><span class="badge badge-pending"><i class="fas fa-circle"></i> Pending</span></td>
+              <td>—</td>
+              <td><div class="actions"><button class="action-btn resend" title="Resend Invitation"><i class="fas fa-paper-plane"></i></button><button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div class="employee-info"><div class="avatar green">AJ</div><div><div class="employee-name">Alice Johnson</div><div class="employee-email">alice@company.com</div></div></div></td>
+              <td><span class="badge badge-employee"><i class="fas fa-user"></i> Employee</span></td>
+              <td><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></td>
+              <td>Jan 25, 2026</td>
+              <td><div class="actions"><button class="action-btn view" title="View"><i class="fas fa-eye"></i></button><button class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></button><button class="action-btn delete" title="Delete"><i class="fas fa-trash"></i></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 2: Add Employee Modal -->
+  <div class="screen" id="screen1">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item active"><i class="fas fa-users"></i> Employees</div></div>
+    </aside>
+    <main class="main" style="filter:blur(2px);pointer-events:none">
+      <div class="page-header"><div><h1 class="page-title">Employees</h1></div></div>
+      <div class="card"><div style="height:300px"></div></div>
+    </main>
+    <div class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title"><i class="fas fa-user-plus" style="color:#6366f1"></i> Add New Employee</span>
+          <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <div class="form-input-icon"><i class="fas fa-user"></i><input type="text" class="form-input" placeholder="Enter employee name" style="padding-left:42px"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address <span class="required">*</span></label>
+            <div class="form-input-icon"><i class="fas fa-envelope"></i><input type="email" class="form-input" placeholder="employee@company.com" style="padding-left:42px"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number <span style="color:#9ca3af">(Optional)</span></label>
+            <div class="form-input-icon"><i class="fas fa-phone"></i><input type="tel" class="form-input" placeholder="+47 XXX XX XXX" style="padding-left:42px"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role <span class="required">*</span></label>
+            <select class="form-select"><option value="">Select role</option><option value="manager">Manager</option><option value="employee" selected>Employee</option></select>
+            <div class="role-info">
+              <div class="role-info-title"><i class="fas fa-info-circle"></i> Employee Permissions</div>
+              <div class="role-info-item"><i class="fas fa-check"></i> View marketplace and browse experiences</div>
+              <div class="role-info-item"><i class="fas fa-check"></i> Use tickets and redeem experiences</div>
+              <div class="role-info-item"><i class="fas fa-check"></i> View own bookings and history</div>
+              <div class="role-info-item"><i class="fas fa-times"></i> Cannot manage other employees</div>
+              <div class="role-info-item"><i class="fas fa-times"></i> Cannot create experiences</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send Invitation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: View Employee Modal -->
+  <div class="screen" id="screen2">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item active"><i class="fas fa-users"></i> Employees</div></div>
+    </aside>
+    <main class="main" style="filter:blur(2px);pointer-events:none">
+      <div class="page-header"><div><h1 class="page-title">Employees</h1></div></div>
+      <div class="card"><div style="height:300px"></div></div>
+    </main>
+    <div class="modal-overlay">
+      <div class="modal" style="max-width:560px">
+        <div class="detail-header" style="border-radius:20px 20px 0 0">
+          <div class="detail-avatar">JS</div>
+          <div class="detail-info">
+            <h2>Jane Smith</h2>
+            <p>jane@company.com</p>
+            <div class="detail-badges">
+              <span class="detail-badge"><i class="fas fa-user-tie"></i> Manager</span>
+              <span class="detail-badge"><i class="fas fa-circle" style="font-size:8px"></i> Active</span>
+            </div>
+          </div>
+          <button class="modal-close" style="position:absolute;right:16px;top:16px;background:rgba(255,255,255,0.2)"><i class="fas fa-times" style="color:#fff"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="detail-grid">
+            <div class="detail-item"><label>Full Name</label><p>Jane Smith</p></div>
+            <div class="detail-item"><label>Email Address</label><p>jane@company.com</p></div>
+            <div class="detail-item"><label>Phone Number</label><p>+47 123 45 678</p></div>
+            <div class="detail-item"><label>Role</label><p><span class="badge badge-manager"><i class="fas fa-user-tie"></i> Manager</span></p></div>
+            <div class="detail-item"><label>Status</label><p><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></p></div>
+            <div class="detail-item"><label>Joined Date</label><p>January 20, 2026</p></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary"><i class="fas fa-edit"></i> Edit</button>
+          <button class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Change Role</button>
+          <button class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Edit Employee Modal -->
+  <div class="screen" id="screen3">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item active"><i class="fas fa-users"></i> Employees</div></div>
+    </aside>
+    <main class="main" style="filter:blur(2px);pointer-events:none">
+      <div class="page-header"><div><h1 class="page-title">Employees</h1></div></div>
+      <div class="card"><div style="height:300px"></div></div>
+    </main>
+    <div class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title"><i class="fas fa-edit" style="color:#6366f1"></i> Edit Employee</span>
+          <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#f9fafb;border-radius:12px;margin-bottom:20px">
+            <div class="avatar blue" style="width:48px;height:48px;font-size:16px">JS</div>
+            <div><div style="font-weight:600;color:#1f2937">Jane Smith</div><div style="font-size:13px;color:#6b7280">jane@company.com</div></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <input type="text" class="form-input" value="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" value="jane@company.com" disabled>
+            <p class="form-hint"><i class="fas fa-info-circle"></i> Email cannot be changed</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number <span style="color:#9ca3af">(Optional)</span></label>
+            <input type="tel" class="form-input" value="+47 123 45 678">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-select" disabled style="background-color:#f3f4f6"><option>Manager</option></select>
+            <p class="form-hint"><i class="fas fa-lock"></i> Only Owners can change roles</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 5: Deleted Employees -->
+  <div class="screen" id="screen4">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item active"><i class="fas fa-users"></i> Employees</div></div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Employees</h1><p class="page-subtitle">Manage your company employees and their roles</p></div>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Employee</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-users"></i></div><div class="stat-value">18</div><div class="stat-label">Total Employees</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div class="stat-value">15</div><div class="stat-label">Active</div></div>
+        <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-clock"></i></div><div class="stat-value">2</div><div class="stat-label">Pending</div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="fas fa-trash"></i></div><div class="stat-value">3</div><div class="stat-label">Deleted</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span class="card-title">Deleted Employees</span>
+            <div class="tabs">
+              <span class="tab">Active</span>
+              <span class="tab active">Deleted</span>
+            </div>
+          </div>
+          <div class="filters">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search deleted..."></div>
+          </div>
+        </div>
+        <div style="padding:0 24px">
+          <div class="deleted-banner">
+            <i class="fas fa-info-circle"></i>
+            <div class="deleted-banner-text"><strong>Soft deleted employees</strong> can be restored within 30 days. After that, they will be permanently removed.</div>
+          </div>
+        </div>
+        <table class="table">
+          <thead><tr><th>Employee</th><th>Role</th><th>Status</th><th>Deleted On</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="employee-info"><div class="avatar gray">MK</div><div><div class="employee-name" style="color:#6b7280">Mike Kennedy</div><div class="employee-email">mike@company.com</div></div></div></td>
+              <td><span class="badge badge-employee"><i class="fas fa-user"></i> Employee</span></td>
+              <td><span class="badge badge-deleted"><i class="fas fa-trash"></i> Deleted</span></td>
+              <td>Jan 28, 2026</td>
+              <td><div class="actions"><button class="action-btn restore" title="Restore"><i class="fas fa-undo"></i></button><button class="action-btn delete" title="Permanently Delete"><i class="fas fa-times"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div class="employee-info"><div class="avatar gray">SL</div><div><div class="employee-name" style="color:#6b7280">Sarah Lee</div><div class="employee-email">sarah@company.com</div></div></div></td>
+              <td><span class="badge badge-manager"><i class="fas fa-user-tie"></i> Manager</span></td>
+              <td><span class="badge badge-deleted"><i class="fas fa-trash"></i> Deleted</span></td>
+              <td>Jan 25, 2026</td>
+              <td><div class="actions"><button class="action-btn restore" title="Restore"><i class="fas fa-undo"></i></button><button class="action-btn delete" title="Permanently Delete"><i class="fas fa-times"></i></button></div></td>
+            </tr>
+            <tr>
+              <td><div class="employee-info"><div class="avatar gray">TC</div><div><div class="employee-name" style="color:#6b7280">Tom Chen</div><div class="employee-email">tom@company.com</div></div></div></td>
+              <td><span class="badge badge-employee"><i class="fas fa-user"></i> Employee</span></td>
+              <td><span class="badge badge-deleted"><i class="fas fa-trash"></i> Deleted</span></td>
+              <td>Jan 20, 2026</td>
+              <td><div class="actions"><button class="action-btn restore" title="Restore"><i class="fas fa-undo"></i></button><button class="action-btn delete" title="Permanently Delete"><i class="fas fa-times"></i></button></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 6: Invitation Email -->
+  <div class="screen" id="screen5">
+    <div class="auth-wrapper">
+      <div>
+        <h2 style="text-align:center;color:#1f2937;margin-bottom:8px;font-size:20px">📧 Email Preview</h2>
+        <p style="text-align:center;color:#6b7280;margin-bottom:24px;font-size:14px">This is what the employee will receive</p>
+        <div class="email-preview">
+          <div class="email-header">
+            <div class="email-logo">S</div>
+            <div class="email-title">You're Invited!</div>
+          </div>
+          <div class="email-body">
+            <p class="email-text">Hi <strong>Bob Wilson</strong>,</p>
+            <p class="email-text">You've been invited to join <strong>TechCorp AS</strong> on SwapJoys — an employee experience exchange platform.</p>
+            <div class="email-info-box">
+              <div class="email-info-row"><span class="email-info-label">Invited by</span><span class="email-info-value">Selim Tesfamariam</span></div>
+              <div class="email-info-row"><span class="email-info-label">Your Role</span><span class="email-info-value"><span class="badge badge-employee"><i class="fas fa-user"></i> Employee</span></span></div>
+            </div>
+            <a href="#" class="email-btn">Accept Invitation</a>
+            <p style="text-align:center;font-size:13px;color:#6b7280">This invitation link will expire in <strong>7 days</strong>.</p>
+            <div class="email-footer">© 2026 SwapJoys. All rights reserved.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 7: Account Activation -->
+  <div class="screen" id="screen6">
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-logo">S</div>
+          <h1 class="auth-title">Activate Your Account</h1>
+          <p class="auth-subtitle">Set up your password to get started</p>
+        </div>
+        <div class="auth-body">
+          <div class="info-box">
+            <div class="info-box-label">You've been invited to join</div>
+            <div class="info-box-value">TechCorp AS</div>
+          </div>
+          <div class="role-display">
+            <div class="role-icon"><i class="fas fa-user"></i></div>
+            <div><div class="role-label">Your assigned role</div><div class="role-name">Employee</div></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Create Password <span class="required">*</span></label>
+            <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" class="form-input" placeholder="••••••••" style="padding-left:42px"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password <span class="required">*</span></label>
+            <div class="form-input-icon"><i class="fas fa-lock"></i><input type="password" class="form-input" placeholder="••••••••" style="padding-left:42px"></div>
+          </div>
+          <div class="password-req">
+            <div class="password-req-title">Password Requirements:</div>
+            <div class="req-item valid"><div class="circle"><i class="fas fa-check"></i></div><span>At least 8 characters</span></div>
+            <div class="req-item valid"><div class="circle"><i class="fas fa-check"></i></div><span>One uppercase letter</span></div>
+            <div class="req-item"><div class="circle"><i class="fas fa-check"></i></div><span>One number</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:24px"><i class="fas fa-check"></i> Activate Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 8: Activation Success -->
+  <div class="screen" id="screen7">
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-body" style="padding:48px 32px;text-align:center">
+          <div class="success-icon">✅</div>
+          <h2 class="success-title">Account Activated!</h2>
+          <p class="success-text">Your account has been successfully activated.<br>You can now login and start using SwapJoys.</p>
+          <div class="info-box green" style="margin-bottom:24px">
+            <div class="info-box-label">🏢 You're now part of</div>
+            <div class="info-box-value">TechCorp AS</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%"><i class="fas fa-arrow-right"></i> Continue to Login</button>
+          <p style="font-size:13px;color:#9ca3af;margin-top:16px">You will be redirected automatically in 5 seconds...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 9: Empty State -->
+  <div class="screen" id="screen8">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item active"><i class="fas fa-users"></i> Employees</div></div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Employees</h1><p class="page-subtitle">Manage your company employees and their roles</p></div>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Employee</button>
+      </div>
+      <div class="card">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fas fa-users"></i></div>
+          <h3 class="empty-title">No Employees Yet</h3>
+          <p class="empty-text">Start building your team by adding your first employee.</p>
+          <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Your First Employee</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showScreen(i) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.design-nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('screen' + i).classList.add('active');
+      document.querySelectorAll('.design-nav-btn')[i].classList.add('active');
+    }
+  </script>
+</body>
+</html>
