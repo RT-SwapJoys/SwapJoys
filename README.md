@@ -1,7 +1,7 @@
 # SwapJoys Platform MVP
 
 ![SwapJoys](https://img.shields.io/badge/SwapJoys-Platform-6366f1)
-![Version](https://img.shields.io/badge/version-1.1.0--M2-blue)
+![Version](https://img.shields.io/badge/version-1.2.0--M3-blue)
 ![Status](https://img.shields.io/badge/status-In%20Development-yellow)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
@@ -129,8 +129,16 @@ SwapJoys/
 │   └── Designs/
 │       ├── HTML-CSS-Templates.html
 │       └── Landing-Page.html
-├── Milestone 3/                    # Employee Onboarding (Next)
-├── Milestone 4/                    # Experience Marketplace (Coming)
+├── Milestone 3/                    # Employee Onboarding & Roles
+│   ├── Deliverables/
+│   │   ├── HTMLCSS-design-templates.html
+│   │   ├── Platform-Flow-Diagram-Employee-Onboarding.md
+│   │   ├── User-Journey-Map.md
+│   │   └── Wireframes.md
+│   └── Documents/
+│       ├── Release-Notes-M3.md
+│       └── Task-Report-M3.xlsx
+├── Milestone 4/                    # Experience Marketplace (Next)
 ├── Milestone 5/                    # Booking & QR (Coming)
 ├── Milestone 6/                    # Points System (Coming)
 ├── Milestone 7/                    # Admin & Tax Part 1 (Coming)
@@ -146,8 +154,8 @@ SwapJoys/
 |-----------|-------|----------|----------|--------|
 | **M1** | 1-2 | 2 weeks | Foundation Setup | ✅ Complete |
 | **M2** | 3-4 | 2 weeks | Company Registration | ✅ Complete |
-| **M3** | 5-6 | 2 weeks | Employee Onboarding, Roles | 🔄 Next |
-| **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | ⏳ Planned |
+| **M3** | 5-6 | 2 weeks | Employee Onboarding, Roles | ✅ Complete |
+| **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | 🔄 Next |
 | **M5** | 9-10 | 2 weeks | Booking, QR Verification, Status | ⏳ Planned |
 | **M6** | 11-12 | 2 weeks | Points System, Balance, Override | ⏳ Planned |
 | **M7** | 13-14 | 2 weeks | Admin Dashboard, Tax Part 1 | ⏳ Planned |
@@ -171,6 +179,20 @@ The following features were delivered beyond the original M2 scope:
 | Protected Routes | Redirect system for unverified users |
 | Language Toggle | Norwegian/English language switch |
 | Resend Verification | Resend verification email functionality |
+
+---
+
+## Milestone 3 — Additional Delivered
+
+The following features were delivered beyond the original M3 scope:
+
+| Feature | Description |
+|---------|-------------|
+| New Landing Page Design | Complete redesign with modern layout, hero section, features, CTA |
+| 9 AI-Generated Images | Custom images created and integrated into landing page |
+| Full Project Color Scheme Change | Updated color palette across all pages to match new landing page |
+| Language Toggle (NO/EN) | Norwegian/English language switching across full website |
+| Profile in Settings | Added user profile management section in Settings page |
 
 ---
 
