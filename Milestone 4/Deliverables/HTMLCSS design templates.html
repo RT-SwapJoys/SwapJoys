@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapJoys - Milestone 4 HTML/CSS Designs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; min-height: 100vh; }
+    
+    .design-nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); z-index: 1000; flex-wrap: wrap; }
+    .design-nav-title { font-weight: 700; color: #1f2937; font-size: 13px; margin-right: 8px; }
+    .design-nav-btn { padding: 6px 12px; border: none; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: #f3f4f6; color: #4b5563; white-space: nowrap; }
+    .design-nav-btn:hover { background: #e5e7eb; }
+    .design-nav-btn.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    
+    .screen { display: none; padding-top: 60px; min-height: 100vh; }
+    .screen.active { display: block; }
+    
+    .sidebar { width: 250px; background: linear-gradient(180deg, #1a1f36 0%, #252b48 100%); min-height: calc(100vh - 60px); position: fixed; left: 0; top: 60px; padding: 20px 0; }
+    .logo { padding: 0 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; font-weight: 700; }
+    .logo-text { color: #fff; font-size: 20px; font-weight: 700; }
+    .logo-text span { color: #8b5cf6; }
+    .nav-section { padding: 0 12px; margin-bottom: 20px; }
+    .nav-label { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; margin-bottom: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-item.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    .nav-item i { width: 20px; text-align: center; }
+    
+    .main { margin-left: 250px; padding: 24px; }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #1f2937; }
+    .page-subtitle { color: #6b7280; font-size: 14px; margin-top: 4px; }
+    
+    .btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.4); }
+    .btn-secondary { background: #f3f4f6; color: #374151; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-danger { background: #fee2e2; color: #dc2626; }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-success { background: #dcfce7; color: #16a34a; }
+    .btn-success:hover { background: #bbf7d0; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+    .btn-lg { padding: 14px 28px; font-size: 16px; }
+    
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-value { font-size: 28px; font-weight: 700; color: #1f2937; }
+    .stat-label { color: #6b7280; font-size: 13px; margin-top: 4px; }
+    .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
+    .stat-icon.blue { background: rgba(99,102,241,0.1); color: #6366f1; }
+    .stat-icon.green { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .stat-icon.gray { background: rgba(107,114,128,0.1); color: #6b7280; }
+    
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-size: 16px; font-weight: 600; color: #1f2937; }
+    .card-body { padding: 20px 24px; }
+    
+    .filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .search-box { position: relative; }
+    .search-box input { padding: 10px 14px 10px 38px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; width: 240px; transition: all 0.2s; }
+    .search-box input:focus { outline: none; border-color: #6366f1; }
+    .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .filter-select { padding: 10px 32px 10px 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; cursor: pointer; }
+    
+    /* Experience Cards Grid */
+    .exp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .exp-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: all 0.2s; border: 1px solid #f3f4f6; cursor: pointer; }
+    .exp-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+    .exp-card-img { width: 100%; height: 180px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); display: flex; align-items: center; justify-content: center; color: #818cf8; font-size: 13px; position: relative; }
+    .exp-card-img.dining { background: linear-gradient(135deg, #fff7ed, #fed7aa); color: #f97316; }
+    .exp-card-img.wellness { background: linear-gradient(135deg, #ecfdf5, #a7f3d0); color: #22c55e; }
+    .exp-card-img.entertainment { background: linear-gradient(135deg, #faf5ff, #e9d5ff); color: #a855f7; }
+    .exp-card-img.activities { background: linear-gradient(135deg, #eff6ff, #bfdbfe); color: #3b82f6; }
+    .exp-card-img.culture { background: linear-gradient(135deg, #fdf2f8, #fbcfe8); color: #ec4899; }
+    .exp-card-status { position: absolute; top: 12px; right: 12px; }
+    .exp-card-body { padding: 18px; }
+    .exp-card-title { font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 6px; }
+    .exp-card-company { font-size: 13px; color: #6b7280; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .exp-card-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .exp-card-points { display: flex; align-items: center; gap: 6px; font-size: 18px; font-weight: 700; color: #6366f1; margin-bottom: 14px; }
+    .exp-card-actions { display: flex; gap: 8px; }
+    
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .badge-active { background: #dcfce7; color: #16a34a; }
+    .badge-inactive { background: #f3f4f6; color: #6b7280; }
+    .badge-dining { background: #fff7ed; color: #ea580c; }
+    .badge-wellness { background: #ecfdf5; color: #16a34a; }
+    .badge-entertainment { background: #faf5ff; color: #9333ea; }
+    .badge-activities { background: #eff6ff; color: #2563eb; }
+    .badge-culture { background: #fdf2f8; color: #db2777; }
+    .badge-travel { background: #eef2ff; color: #4f46e5; }
+    .badge-other { background: #f3f4f6; color: #4b5563; }
+    .badge-city { background: #f3f4f6; color: #374151; }
+    .badge-welfare-yes { background: #dcfce7; color: #16a34a; }
+    .badge-welfare-no { background: #fee2e2; color: #dc2626; }
+    .badge i { font-size: 8px; }
+    
+    /* Form Styles */
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .form-label .required { color: #ef4444; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; }
+    .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    .form-textarea { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; min-height: 100px; resize: vertical; transition: all 0.2s; font-family: inherit; }
+    .form-textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    .form-select { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 16px center; appearance: none; cursor: pointer; }
+    .form-hint { font-size: 12px; color: #6b7280; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    .upload-zone { border: 2px dashed #d1d5db; border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafafa; }
+    .upload-zone:hover { border-color: #6366f1; background: #f5f3ff; }
+    .upload-icon { font-size: 36px; color: #9ca3af; margin-bottom: 12px; }
+    .upload-text { font-size: 14px; color: #6b7280; }
+    .upload-text strong { color: #6366f1; }
+    .upload-hint { font-size: 12px; color: #9ca3af; margin-top: 6px; }
+    
+    .photo-preview { width: 100%; height: 200px; border-radius: 12px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); display: flex; align-items: center; justify-content: center; color: #818cf8; font-size: 14px; position: relative; margin-bottom: 8px; }
+    .photo-change { text-align: center; }
+    .photo-change a { color: #6366f1; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .photo-change a:hover { text-decoration: underline; }
+    
+    .tax-section { background: #fffbeb; border: 2px solid #fde68a; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .tax-section-title { font-size: 13px; font-weight: 600; color: #92400e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Detail Page */
+    .detail-photo { width: 100%; height: 320px; border-radius: 16px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); display: flex; align-items: center; justify-content: center; color: #818cf8; font-size: 14px; margin-bottom: 24px; }
+    .detail-title { font-size: 28px; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+    .detail-badges { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .detail-section { margin-bottom: 24px; }
+    .detail-section-title { font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .detail-section p { font-size: 15px; color: #374151; line-height: 1.7; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .detail-item { padding: 16px; background: #f9fafb; border-radius: 12px; }
+    .detail-item label { display: block; font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .detail-item p { font-size: 16px; font-weight: 600; color: #1f2937; }
+    .host-card { display: flex; align-items: center; gap: 14px; padding: 16px; background: #f9fafb; border-radius: 12px; }
+    .host-avatar { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; color: #fff; }
+    .host-name { font-weight: 600; color: #1f2937; font-size: 15px; }
+    .host-location { font-size: 13px; color: #6b7280; }
+    
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #6366f1; font-size: 14px; font-weight: 600; text-decoration: none; margin-bottom: 20px; cursor: pointer; }
+    .back-link:hover { color: #4f46e5; }
+    
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { width: 80px; height: 80px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: #9ca3af; }
+    .empty-title { font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+    .empty-text { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+    
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px; }
+    .page-btn { width: 36px; height: 36px; border: 2px solid #e5e7eb; background: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: #4b5563; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover { border-color: #6366f1; color: #6366f1; }
+    .page-btn.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); border-color: #6366f1; color: #fff; }
+    
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+    .results-count { font-size: 14px; color: #6b7280; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <div class="design-nav">
+    <span class="design-nav-title">M4 Designs:</span>
+    <button class="design-nav-btn active" onclick="showScreen(0)">1. My Experiences</button>
+    <button class="design-nav-btn" onclick="showScreen(1)">2. Create Experience</button>
+    <button class="design-nav-btn" onclick="showScreen(2)">3. Edit Experience</button>
+    <button class="design-nav-btn" onclick="showScreen(3)">4. Marketplace</button>
+    <button class="design-nav-btn" onclick="showScreen(4)">5. Experience Detail</button>
+    <button class="design-nav-btn" onclick="showScreen(5)">6. Detail (Owner)</button>
+    <button class="design-nav-btn" onclick="showScreen(6)">7. Empty State</button>
+  </div>
+
+  <!-- Screen 1: My Experiences -->
+  <div class="screen active" id="screen0">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item active"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Experiences</h1><p class="page-subtitle">Manage your company's experiences</p></div>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Experience</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-calendar-plus"></i></div><div class="stat-value">8</div><div class="stat-label">Total Experiences</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div class="stat-value">6</div><div class="stat-label">Active</div></div>
+        <div class="stat-card"><div class="stat-icon gray"><i class="fas fa-eye-slash"></i></div><div class="stat-value">2</div><div class="stat-label">Inactive</div></div>
+      </div>
+      <div class="exp-grid">
+        <div class="exp-card">
+          <div class="exp-card-img dining">
+            <span class="exp-card-status"><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Team Dinner at Fjord Restaurant</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 30 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img wellness">
+            <span class="exp-card-status"><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Spa Day Package</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-wellness"><i class="fas fa-spa"></i> Wellness</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Bergen</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 50 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img entertainment">
+            <span class="exp-card-status"><span class="badge badge-inactive"><i class="fas fa-circle"></i> Inactive</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Movie Night for Teams</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-entertainment"><i class="fas fa-theater-masks"></i> Entertainment</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Trondheim</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 20 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img activities">
+            <span class="exp-card-status"><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Rock Climbing Session</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-activities"><i class="fas fa-running"></i> Activities</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Stavanger</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 35 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img culture">
+            <span class="exp-card-status"><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Art Workshop</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-culture"><i class="fas fa-palette"></i> Culture</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 25 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img dining">
+            <span class="exp-card-status"><span class="badge badge-active"><i class="fas fa-circle"></i> Active</span></span>
+            [ Photo ]
+          </div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Wine Tasting Evening</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> TechCorp AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Bergen</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 45 points</div>
+            <div class="exp-card-actions">
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 2: Create Experience -->
+  <div class="screen" id="screen1">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item active"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a class="back-link"><i class="fas fa-arrow-left"></i> Back to Experiences</a>
+      <div class="page-header">
+        <div><h1 class="page-title">Create Experience</h1><p class="page-subtitle">Fill in the details to publish your experience to the marketplace</p></div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Experience Title <span class="required">*</span></label>
+            <input type="text" class="form-input" placeholder="e.g. Team Dinner at Fjord Restaurant">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description <span class="required">*</span></label>
+            <textarea class="form-textarea" placeholder="Describe the experience in detail. What will participants enjoy? What makes it special?"></textarea>
+            <p class="form-hint"><i class="fas fa-info-circle"></i> Minimum 20 characters</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Photo <span class="required">*</span></label>
+            <div class="upload-zone">
+              <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+              <div class="upload-hint">JPG or PNG, max 5MB</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Capacity (Max Redemptions) <span class="required">*</span></label>
+              <input type="number" class="form-input" placeholder="e.g. 10" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Point Cost <span class="required">*</span></label>
+              <input type="number" class="form-input" placeholder="e.g. 30" min="1">
+              <p class="form-hint"><i class="fas fa-info-circle"></i> Points required to book this experience</p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category <span class="required">*</span></label>
+              <select class="form-select">
+                <option value="">Select category</option>
+                <option>Dining</option>
+                <option>Wellness</option>
+                <option>Entertainment</option>
+                <option>Activities</option>
+                <option>Culture</option>
+                <option>Travel</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">City <span class="required">*</span></label>
+              <select class="form-select">
+                <option value="">Select city</option>
+                <option>Oslo</option>
+                <option>Bergen</option>
+                <option>Trondheim</option>
+                <option>Stavanger</option>
+                <option>Tromsø</option>
+                <option>Kristiansand</option>
+                <option>Drammen</option>
+                <option>Fredrikstad</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="tax-section">
+            <div class="tax-section-title"><i class="fas fa-file-invoice"></i> Tax Documentation Fields</div>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">Estimated Value (NOK) <span class="required">*</span></label>
+                <input type="number" class="form-input" placeholder="e.g. 500" min="0" step="0.01" style="border-color:#fde68a">
+                <p class="form-hint"><i class="fas fa-info-circle"></i> Market value for tax documentation purposes</p>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">Qualifies as Welfare Benefit? <span class="required">*</span></label>
+                <select class="form-select" style="border-color:#fde68a">
+                  <option value="">Select Yes / No</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+                <p class="form-hint"><i class="fas fa-info-circle"></i> Mandatory welfare classification tag</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rules / Terms <span style="color:#9ca3af">(Optional)</span></label>
+            <textarea class="form-textarea" placeholder="Any special rules, conditions, or requirements for this experience..." style="min-height:80px"></textarea>
+          </div>
+          <hr class="divider">
+          <div style="display:flex;justify-content:flex-end;gap:12px">
+            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-primary btn-lg"><i class="fas fa-rocket"></i> Publish Experience</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 3: Edit Experience -->
+  <div class="screen" id="screen2">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item active"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a class="back-link"><i class="fas fa-arrow-left"></i> Back to Experiences</a>
+      <div class="page-header">
+        <div><h1 class="page-title">Edit Experience</h1><p class="page-subtitle">Update your experience details</p></div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Photo</label>
+            <div class="photo-preview">[ Current Photo Preview ]</div>
+            <div class="photo-change"><a><i class="fas fa-camera"></i> Change Photo</a></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Experience Title <span class="required">*</span></label>
+            <input type="text" class="form-input" value="Team Dinner at Fjord Restaurant">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description <span class="required">*</span></label>
+            <textarea class="form-textarea">Enjoy a wonderful team dinner experience at Fjord Restaurant. Perfect for team building with a 3-course meal including local Norwegian cuisine and stunning fjord views.</textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Capacity (Max Redemptions) <span class="required">*</span></label>
+              <input type="number" class="form-input" value="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Point Cost <span class="required">*</span></label>
+              <input type="number" class="form-input" value="30">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category <span class="required">*</span></label>
+              <select class="form-select"><option selected>Dining</option><option>Wellness</option><option>Entertainment</option><option>Activities</option><option>Culture</option><option>Travel</option><option>Other</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">City <span class="required">*</span></label>
+              <select class="form-select"><option selected>Oslo</option><option>Bergen</option><option>Trondheim</option><option>Stavanger</option><option>Tromsø</option><option>Kristiansand</option><option>Drammen</option><option>Fredrikstad</option><option>Other</option></select>
+            </div>
+          </div>
+          <div class="tax-section">
+            <div class="tax-section-title"><i class="fas fa-file-invoice"></i> Tax Documentation Fields</div>
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">Estimated Value (NOK) <span class="required">*</span></label>
+                <input type="number" class="form-input" value="500" style="border-color:#fde68a">
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label class="form-label">Qualifies as Welfare Benefit? <span class="required">*</span></label>
+                <select class="form-select" style="border-color:#fde68a"><option value="yes" selected>Yes</option><option value="no">No</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rules / Terms <span style="color:#9ca3af">(Optional)</span></label>
+            <textarea class="form-textarea" style="min-height:80px">Maximum 10 people per session. Must book at least 3 days in advance.</textarea>
+          </div>
+          <hr class="divider">
+          <div style="display:flex;justify-content:flex-end;gap:12px">
+            <button class="btn btn-danger"><i class="fas fa-eye-slash"></i> Deactivate</button>
+            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 4: Marketplace -->
+  <div class="screen" id="screen3">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item active"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Marketplace</h1><p class="page-subtitle">Discover experiences from other companies</p></div>
+      </div>
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-body" style="padding:16px 24px">
+          <div class="filters">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search experiences..."></div>
+            <select class="filter-select"><option>All Categories</option><option>Dining</option><option>Wellness</option><option>Entertainment</option><option>Activities</option><option>Culture</option><option>Travel</option><option>Other</option></select>
+            <select class="filter-select"><option>All Cities</option><option>Oslo</option><option>Bergen</option><option>Trondheim</option><option>Stavanger</option><option>Tromsø</option><option>Kristiansand</option><option>Drammen</option><option>Fredrikstad</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="results-count">Showing <strong>24</strong> experiences</div>
+      <div class="exp-grid">
+        <div class="exp-card">
+          <div class="exp-card-img wellness">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Yoga Classes for Teams</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> HealthCo AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-wellness"><i class="fas fa-spa"></i> Wellness</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 40 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img dining">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Wine Tasting Experience</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> VinoAS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Bergen</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 60 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img activities">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Rock Climbing Adventure</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> AdventureCo</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-activities"><i class="fas fa-running"></i> Activities</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Trondheim</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 35 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img entertainment">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Comedy Night Tickets</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> FunTime AS</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-entertainment"><i class="fas fa-theater-masks"></i> Entertainment</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 25 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img culture">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Museum Guided Tour</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> CultureHub</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-culture"><i class="fas fa-palette"></i> Culture</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Stavanger</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 30 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+        <div class="exp-card">
+          <div class="exp-card-img wellness">[ Photo ]</div>
+          <div class="exp-card-body">
+            <div class="exp-card-title">Meditation Workshop</div>
+            <div class="exp-card-company"><i class="fas fa-building"></i> ZenSpace</div>
+            <div class="exp-card-meta">
+              <span class="badge badge-wellness"><i class="fas fa-spa"></i> Wellness</span>
+              <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Tromsø</span>
+            </div>
+            <div class="exp-card-points"><i class="fas fa-coins"></i> 20 points</div>
+            <div class="exp-card-actions"><button class="btn btn-primary btn-sm" style="width:100%"><i class="fas fa-eye"></i> View Details</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 5: Experience Detail (Marketplace View) -->
+  <div class="screen" id="screen4">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item active"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a class="back-link"><i class="fas fa-arrow-left"></i> Back to Marketplace</a>
+      <div class="detail-photo">[ Large Experience Photo ]</div>
+      <div class="card">
+        <div class="card-body">
+          <div class="detail-title">Yoga Classes for Teams</div>
+          <div class="detail-badges">
+            <span class="badge badge-wellness"><i class="fas fa-spa"></i> Wellness</span>
+            <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+          </div>
+          <hr class="divider">
+          <div class="detail-section">
+            <div class="detail-section-title">Description</div>
+            <p>A wonderful yoga experience for your team. Our certified instructors will guide your team through a relaxing 90-minute yoga session. Perfect for team building and wellness. Includes yoga mats, water, and a healthy snack after the session. Suitable for all skill levels from beginners to advanced practitioners.</p>
+          </div>
+          <hr class="divider">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Point Cost</label>
+              <p><i class="fas fa-coins" style="color:#6366f1"></i> 40 points</p>
+            </div>
+            <div class="detail-item">
+              <label>Capacity</label>
+              <p><i class="fas fa-users" style="color:#6366f1"></i> 8 / 10 remaining</p>
+            </div>
+            <div class="detail-item">
+              <label>Estimated Value</label>
+              <p><i class="fas fa-money-bill-wave" style="color:#f97316"></i> NOK 800</p>
+            </div>
+            <div class="detail-item">
+              <label>Welfare Benefit</label>
+              <p><span class="badge badge-welfare-yes"><i class="fas fa-check-circle"></i> Yes</span></p>
+            </div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-title">Rules & Terms</div>
+            <p>• Maximum 10 people per session<br>• Must book at least 3 days in advance<br>• Comfortable clothing recommended<br>• Available Monday to Friday, 10:00 – 16:00</p>
+          </div>
+          <hr class="divider">
+          <div class="detail-section">
+            <div class="detail-section-title">Hosted by</div>
+            <div class="host-card">
+              <div class="host-avatar">HC</div>
+              <div>
+                <div class="host-name">HealthCo AS</div>
+                <div class="host-location"><i class="fas fa-map-marker-alt"></i> Oslo, Norway</div>
+              </div>
+            </div>
+          </div>
+          <hr class="divider">
+          <div style="text-align:center">
+            <button class="btn btn-primary btn-lg"><i class="fas fa-ticket-alt"></i> Request Experience</button>
+            <p style="font-size:12px;color:#9ca3af;margin-top:8px">Booking functionality available in next milestone</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 6: Experience Detail (Owner View) -->
+  <div class="screen" id="screen5">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item active"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a class="back-link"><i class="fas fa-arrow-left"></i> Back to My Experiences</a>
+      <div class="detail-photo dining" style="background:linear-gradient(135deg, #fff7ed, #fed7aa);color:#f97316">[ Large Experience Photo ]</div>
+      <div class="card">
+        <div class="card-body">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+            <div class="detail-title" style="margin-bottom:0">Team Dinner at Fjord Restaurant</div>
+            <span class="badge badge-active" style="font-size:14px;padding:6px 14px"><i class="fas fa-circle"></i> Active</span>
+          </div>
+          <div class="detail-badges">
+            <span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span>
+            <span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span>
+          </div>
+          <hr class="divider">
+          <div class="detail-section">
+            <div class="detail-section-title">Description</div>
+            <p>Enjoy a wonderful team dinner experience at Fjord Restaurant. Perfect for team building with a 3-course meal including local Norwegian cuisine and stunning fjord views. Our private dining room accommodates groups of up to 10 people.</p>
+          </div>
+          <hr class="divider">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>Point Cost</label>
+              <p><i class="fas fa-coins" style="color:#6366f1"></i> 30 points</p>
+            </div>
+            <div class="detail-item">
+              <label>Capacity</label>
+              <p><i class="fas fa-users" style="color:#6366f1"></i> 7 / 10 remaining</p>
+            </div>
+            <div class="detail-item">
+              <label>Estimated Value</label>
+              <p><i class="fas fa-money-bill-wave" style="color:#f97316"></i> NOK 500</p>
+            </div>
+            <div class="detail-item">
+              <label>Welfare Benefit</label>
+              <p><span class="badge badge-welfare-yes"><i class="fas fa-check-circle"></i> Yes</span></p>
+            </div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-title">Rules & Terms</div>
+            <p>• Maximum 10 people per session<br>• Must book at least 3 days in advance</p>
+          </div>
+          <hr class="divider">
+          <div style="display:flex;gap:12px">
+            <button class="btn btn-primary"><i class="fas fa-edit"></i> Edit Experience</button>
+            <button class="btn btn-danger"><i class="fas fa-eye-slash"></i> Deactivate</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 7: Empty State -->
+  <div class="screen" id="screen6">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joys</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item active"><i class="fas fa-calendar-plus"></i> Experiences</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Experiences</h1><p class="page-subtitle">Manage your company's experiences</p></div>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Experience</button>
+      </div>
+      <div class="card">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fas fa-theater-masks"></i></div>
+          <div class="empty-title">No Experiences Yet</div>
+          <div class="empty-text">Create your first experience and start sharing with other companies on SwapJoys.</div>
+          <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Your First Experience</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showScreen(index) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.design-nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('screen' + index).classList.add('active');
+      document.querySelectorAll('.design-nav-btn')[index].classList.add('active');
+    }
+  </script>
+</body>
+</html>
