@@ -49,7 +49,7 @@ The platform now enables registered companies to:
 ### Feature 4: Create Experience
 - Create Experience form with comprehensive field validation
 - Title, description, capacity, rules/terms input fields
-- Photo upload with preview (JPG/PNG, max 5MB)
+- Photo upload with preview (JPG/PNG, max 5MB). Recommended image size: 720×360 px (2:1 aspect ratio).
 - Point cost setting for experience exchange
 - Estimated Value (NOK) field for tax documentation
 - Welfare Classification mandatory tag (Yes/No)
@@ -153,6 +153,7 @@ The platform now enables registered companies to:
 | Limitation |
 |------------|
 | Single photo per experience (gallery not supported) |
+| Recommended experience image: 720×360 px, max 5MB |
 | Booking/request workflow not yet implemented (Milestone 5) |
 | QR code verification not yet available (Milestone 5) |
 | Points transfer on redemption not yet implemented (Milestone 6) |
