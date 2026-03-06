@@ -1,7 +1,7 @@
 # SwapJoys Platform MVP
 
 ![SwapJoys](https://img.shields.io/badge/SwapJoys-Platform-6366f1)
-![Version](https://img.shields.io/badge/version-1.2.0--M3-blue)
+![Version](https://img.shields.io/badge/version-1.3.0--M4-blue)
 ![Status](https://img.shields.io/badge/status-In%20Development-yellow)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
@@ -138,8 +138,16 @@ SwapJoys/
 │   └── Documents/
 │       ├── Release-Notes-M3.md
 │       └── Task-Report-M3.xlsx
-├── Milestone 4/                    # Experience Marketplace (Next)
-├── Milestone 5/                    # Booking & QR (Coming)
+├── Milestone 4/                    # Experience Creation & Marketplace
+│   ├── Deliverables/
+│   │   ├── HTMLCSS-design-templates.html
+│   │   ├── Platform-Flow-Diagram-Experience-Creation-Marketplace.md
+│   │   ├── User-Journey-Map.md
+│   │   └── Wireframes.md
+│   └── Documents/
+│       ├── Release-Notes-M4.md
+│       └── Task-Report-M4.xlsx
+├── Milestone 5/                    # Booking & QR (Next)
 ├── Milestone 6/                    # Points System (Coming)
 ├── Milestone 7/                    # Admin & Tax Part 1 (Coming)
 ├── Milestone 8/                    # Tax Part 2 & Launch (Coming)
@@ -155,8 +163,8 @@ SwapJoys/
 | **M1** | 1-2 | 2 weeks | Foundation Setup | ✅ Complete |
 | **M2** | 3-4 | 2 weeks | Company Registration | ✅ Complete |
 | **M3** | 5-6 | 2 weeks | Employee Onboarding, Roles | ✅ Complete |
-| **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | 🔄 Next |
-| **M5** | 9-10 | 2 weeks | Booking, QR Verification, Status | ⏳ Planned |
+| **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | ✅ Complete |
+| **M5** | 9-10 | 2 weeks | Booking, QR Verification, Status | 🔄 Next |
 | **M6** | 11-12 | 2 weeks | Points System, Balance, Override | ⏳ Planned |
 | **M7** | 13-14 | 2 weeks | Admin Dashboard, Tax Part 1 | ⏳ Planned |
 | **M8** | 15-16 | 2 weeks | Tax Part 2, Subscription, Launch | ⏳ Planned |
@@ -193,6 +201,16 @@ The following features were delivered beyond the original M3 scope:
 | Full Project Color Scheme Change | Updated color palette across all pages to match new landing page |
 | Language Toggle (NO/EN) | Norwegian/English language switching across full website |
 | Profile in Settings | Added user profile management section in Settings page |
+
+---
+
+## Milestone 4 — Additional Delivered
+
+The following features were delivered beyond the original M4 scope:
+
+| Feature | Description |
+|---------|-------------|
+| Language Toggle (NO/EN) | Norwegian/English language updates for all M4 screens |
 
 ---
 
