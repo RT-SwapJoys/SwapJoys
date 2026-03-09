@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapJoys - Milestone 5 HTML/CSS Designs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F2F3F8; min-height: 100vh; }
+
+    /* Top Navigation */
+    .design-nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); z-index: 1000; flex-wrap: wrap; }
+    .design-nav-title { font-weight: 700; color: #1B2D4F; font-size: 13px; margin-right: 8px; }
+    .design-nav-btn { padding: 5px 10px; border: none; border-radius: 6px; font-size: 10.5px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: #f3f4f6; color: #4b5563; white-space: nowrap; }
+    .design-nav-btn:hover { background: #e5e7eb; }
+    .design-nav-btn.active { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; }
+
+    .screen { display: none; padding-top: 56px; min-height: 100vh; }
+    .screen.active { display: block; }
+
+    /* Sidebar */
+    .sidebar { width: 250px; background: linear-gradient(180deg, #1B2D4F 0%, #223759 100%); min-height: calc(100vh - 56px); position: fixed; left: 0; top: 56px; padding: 20px 0; }
+    .logo { padding: 0 20px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .logo-icon { width: 42px; height: 42px; background: #E8761E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; font-weight: 700; }
+    .logo-text { color: #fff; font-size: 22px; font-weight: 700; }
+    .logo-text span { color: #E8761E; }
+    .nav-section { padding: 0 12px; margin-bottom: 20px; }
+    .nav-label { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; margin-bottom: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-item.active { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; }
+    .nav-item i { width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: #ef4444; color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 8px; font-weight: 600; }
+
+    .main { margin-left: 250px; padding: 24px; }
+
+    /* Page Header */
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #1B2D4F; }
+    .page-subtitle { color: #5a6a7e; font-size: 14px; margin-top: 4px; }
+
+    /* Buttons */
+    .btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; box-shadow: 0 4px 15px rgba(36,72,153,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(36,72,153,0.4); }
+    .btn-secondary { background: #f3f4f6; color: #374151; }
+    .btn-secondary:hover { background: #cdd8e4; }
+    .btn-danger { background: #fee2e2; color: #dc2626; }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-success { background: #dcfce7; color: #16a34a; }
+    .btn-success:hover { background: #bbf7d0; }
+    .btn-orange { background: #E8761E; color: #fff; }
+    .btn-orange:hover { background: #cf6a17; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+    .btn-lg { padding: 14px 28px; font-size: 16px; }
+    .btn-block { width: 100%; justify-content: center; }
+    .btn-outline { background: transparent; border: 2px solid #cdd8e4; color: #374151; }
+    .btn-outline:hover { border-color: #244899; color: #244899; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stats-grid.grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .stat-card { background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: space-between; border: 1px solid #f0f0f0; }
+    .stat-card.blue-tint { background: linear-gradient(135deg, #eef2ff, #e8ecff); border: 1px solid #e0e4ff; }
+    .stat-card.yellow-tint { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a; }
+    .stat-card.green-tint { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #d1fae5; }
+    .stat-card.red-tint { background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 1px solid #fecaca; }
+    .stat-card.gray-tint { background: linear-gradient(135deg, #f9fafb, #f3f4f6); border: 1px solid #e5e7eb; }
+    .stat-value { font-size: 24px; font-weight: 700; color: #1B2D4F; }
+    .stat-label { color: #5a6a7e; font-size: 12px; font-weight: 500; }
+    .stat-info { display: flex; align-items: center; gap: 8px; }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .stat-icon.blue { background: rgba(36,72,153,0.1); color: #244899; }
+    .stat-icon.yellow { background: rgba(234,179,8,0.1); color: #ca8a04; }
+    .stat-icon.green { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .stat-icon.red { background: rgba(239,68,68,0.1); color: #ef4444; }
+    .stat-icon.gray { background: rgba(107,114,128,0.1); color: #6b7280; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: #e5e7eb; padding: 4px; border-radius: 12px; width: fit-content; }
+    .tab { padding: 10px 24px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; color: #5a6a7e; }
+    .tab.active { background: #fff; color: #1B2D4F; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .tab .tab-count { background: #ef4444; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 6px; margin-left: 6px; }
+
+    /* Filters */
+    .filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .filter-select { padding: 10px 32px 10px 14px; border: 2px solid #cdd8e4; border-radius: 8px; font-size: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; cursor: pointer; }
+    .search-box { position: relative; }
+    .search-box input { padding: 10px 14px 10px 38px; border: 2px solid #cdd8e4; border-radius: 8px; font-size: 14px; width: 220px; transition: all 0.2s; }
+    .search-box input:focus { outline: none; border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); }
+    .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+
+    /* Badges */
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .badge i { font-size: 8px; }
+    .badge-pending { background: #FEF3C7; color: #92400E; }
+    .badge-confirmed { background: #DBEAFE; color: #1E40AF; }
+    .badge-used { background: #DCFCE7; color: #166534; }
+    .badge-rejected { background: #FEE2E2; color: #991B1B; }
+    .badge-dining { background: #fff7ed; color: #ea580c; }
+    .badge-wellness { background: #ecfdf5; color: #16a34a; }
+    .badge-city { background: #f3f4f6; color: #374151; }
+
+    /* Booking Cards */
+    .booking-list { display: flex; flex-direction: column; gap: 16px; }
+    .booking-card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f3f4f6; transition: all 0.2s; cursor: pointer; }
+    .booking-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .booking-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .booking-card-title { font-size: 17px; font-weight: 700; color: #1B2D4F; margin-bottom: 4px; }
+    .booking-card-sub { font-size: 13px; color: #5a6a7e; display: flex; align-items: center; gap: 6px; }
+    .booking-card-body { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .booking-card-field label { display: block; font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .booking-card-field p { font-size: 14px; font-weight: 500; color: #374151; }
+    .booking-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid #f3f4f6; }
+    .booking-card-points { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; color: #244899; }
+    .booking-card-actions { display: flex; gap: 8px; }
+    .booking-card-date { font-size: 12px; color: #9ca3af; }
+
+    /* Ticket View */
+    .ticket-container { max-width: 480px; margin: 0 auto; }
+    .ticket-card { background: #fff; border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.1); overflow: hidden; }
+    .ticket-header { background: linear-gradient(135deg, #244899, #2D4BA3); padding: 28px 28px 24px; color: #fff; text-align: center; }
+    .ticket-header-icon { font-size: 32px; margin-bottom: 8px; }
+    .ticket-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .ticket-header p { font-size: 13px; opacity: 0.8; }
+    .ticket-body { padding: 28px; }
+    .ticket-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .ticket-info-item label { display: block; font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .ticket-info-item p { font-size: 14px; font-weight: 600; color: #1B2D4F; }
+    .ticket-divider { border: none; border-top: 2px dashed #e5e7eb; margin: 24px 0; position: relative; }
+    .ticket-divider::before, .ticket-divider::after { content: ''; position: absolute; top: -14px; width: 28px; height: 28px; background: #F2F3F8; border-radius: 50%; }
+    .ticket-divider::before { left: -42px; }
+    .ticket-divider::after { right: -42px; }
+    .qr-section { text-align: center; padding: 10px 0; }
+    .qr-code { width: 200px; height: 200px; background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #9ca3af; }
+    .backup-code { display: inline-block; background: #f3f4f6; padding: 10px 24px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 24px; font-weight: 700; color: #1B2D4F; letter-spacing: 4px; margin-bottom: 8px; }
+    .backup-label { font-size: 12px; color: #9ca3af; }
+    .ticket-footer { padding: 0 28px 28px; }
+
+    /* Scanner Page */
+    .scanner-container { max-width: 640px; margin: 0 auto; }
+    .camera-preview { width: 100%; aspect-ratio: 4 / 3; background: #1a1a2e; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; position: relative; overflow: hidden; margin-bottom: 24px; }
+    .camera-preview .scan-frame { width: 200px; height: 200px; border: 3px solid rgba(255,255,255,0.5); border-radius: 16px; position: relative; }
+    .camera-preview .scan-frame::before { content: ''; position: absolute; top: -3px; left: -3px; right: -3px; height: 3px; background: #22c55e; border-radius: 3px; animation: scanLine 2s ease-in-out infinite; }
+    @keyframes scanLine { 0%, 100% { top: -3px; } 50% { top: calc(100% + 0px); } }
+    .camera-preview .scan-text { margin-top: 16px; font-size: 14px; opacity: 0.7; }
+    .camera-denied { width: 100%; aspect-ratio: 4 / 3; background: #fef2f2; border: 2px dashed #fecaca; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #991B1B; margin-bottom: 24px; padding: 32px; text-align: center; }
+    .camera-denied i { font-size: 40px; margin-bottom: 12px; color: #ef4444; }
+    .or-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; color: #9ca3af; font-size: 13px; font-weight: 600; }
+    .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+    .manual-entry { display: flex; gap: 12px; margin-bottom: 32px; }
+    .manual-entry input { flex: 1; padding: 14px 18px; border: 2px solid #cdd8e4; border-radius: 12px; font-size: 18px; font-family: 'Courier New', monospace; letter-spacing: 4px; text-transform: uppercase; text-align: center; background: #f9fafb; }
+    .manual-entry input:focus { outline: none; border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); background: #fff; }
+    .manual-entry input::placeholder { letter-spacing: 2px; font-size: 14px; }
+    .recent-scans { background: #fff; border-radius: 16px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .recent-scans h3 { font-size: 15px; font-weight: 600; color: #1B2D4F; margin-bottom: 16px; }
+    .recent-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
+    .recent-item:last-child { border-bottom: none; }
+    .recent-icon { width: 40px; height: 40px; border-radius: 10px; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .recent-info { flex: 1; }
+    .recent-info strong { color: #1B2D4F; font-size: 14px; }
+    .recent-info span { display: block; font-size: 12px; color: #9ca3af; }
+
+    /* QR Full Screen */
+    .fullscreen-qr { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; color: #fff; padding: 40px; }
+    .fullscreen-qr .qr-code { width: 280px; height: 280px; background: #fff; border-radius: 16px; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 14px; }
+    .fullscreen-qr .backup-code { background: rgba(255,255,255,0.1); color: #fff; font-size: 32px; letter-spacing: 8px; padding: 14px 32px; border-radius: 12px; margin-bottom: 12px; }
+    .fullscreen-qr .hint { font-size: 14px; opacity: 0.5; margin-top: 24px; }
+    .fullscreen-qr .close-hint { position: absolute; bottom: 40px; font-size: 13px; opacity: 0.4; }
+
+    /* Success Screen */
+    .success-screen { text-align: center; max-width: 440px; margin: 60px auto; background: #fff; border-radius: 24px; padding: 48px 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+    .success-icon { width: 80px; height: 80px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 36px; color: #22c55e; }
+    .success-screen h2 { font-size: 24px; font-weight: 700; color: #1B2D4F; margin-bottom: 8px; }
+    .success-screen .points-badge { display: inline-block; background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; padding: 8px 24px; border-radius: 20px; font-size: 18px; font-weight: 700; margin-bottom: 24px; }
+    .success-details { text-align: left; background: #f9fafb; border-radius: 12px; padding: 20px; margin-bottom: 28px; }
+    .success-details .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    .success-details .detail-row:last-child { border-bottom: none; }
+    .success-details .detail-row label { color: #5a6a7e; }
+    .success-details .detail-row span { color: #1B2D4F; font-weight: 600; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1001; padding: 20px; }
+    .modal { background: #fff; border-radius: 20px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal.modal-lg { max-width: 600px; }
+    .modal-header { padding: 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header.blue-header { background: linear-gradient(135deg, #244899, #2D4BA3); border-radius: 20px 20px 0 0; border-bottom: none; }
+    .modal-header.blue-header .modal-title { color: #fff; }
+    .modal-header.green-header { background: linear-gradient(135deg, #16a34a, #22c55e); border-radius: 20px 20px 0 0; border-bottom: none; }
+    .modal-header.green-header .modal-title { color: #fff; }
+    .modal-header.red-header { background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 20px 20px 0 0; border-bottom: none; }
+    .modal-header.red-header .modal-title { color: #fff; }
+    .modal-title { font-size: 18px; font-weight: 700; color: #1B2D4F; display: flex; align-items: center; gap: 10px; }
+    .modal-close { width: 36px; height: 36px; border: none; background: #f3f4f6; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #5a6a7e; transition: all 0.2s; }
+    .modal-close:hover { background: #cdd8e4; }
+    .modal-header.blue-header .modal-close,
+    .modal-header.green-header .modal-close,
+    .modal-header.red-header .modal-close { background: rgba(255,255,255,0.2); color: #fff; }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 20px 24px; border-top: 1px solid #f3f4f6; display: flex; justify-content: flex-end; gap: 12px; }
+    .modal-overlay.hidden { display: none !important; }
+
+    /* Form Styles */
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .form-label .required { color: #ef4444; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; transition: all 0.2s; background: #f9fafb; }
+    .form-input:focus { outline: none; border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); background: #fff; }
+    .form-textarea { width: 100%; padding: 12px 16px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; min-height: 80px; resize: vertical; transition: all 0.2s; font-family: inherit; background: #f9fafb; }
+    .form-textarea:focus { outline: none; border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); background: #fff; }
+    .form-select { width: 100%; padding: 12px 16px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 16px center; appearance: none; cursor: pointer; }
+    .form-hint { font-size: 12px; color: #5a6a7e; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+
+    /* Info box */
+    .info-box { padding: 16px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; }
+    .info-box.info-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .info-box.info-yellow { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .info-box.info-red { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .info-box.info-green { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .info-box i { margin-top: 2px; }
+
+    /* Detail items in modals */
+    .detail-section { margin-bottom: 20px; }
+    .detail-section-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .detail-section-value { font-size: 15px; font-weight: 500; color: #1B2D4F; }
+    .host-card { display: flex; align-items: center; gap: 14px; padding: 14px; background: #f9fafb; border-radius: 12px; margin-bottom: 20px; }
+    .host-avatar { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #244899, #2D4BA3); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; color: #fff; flex-shrink: 0; }
+    .host-name { font-weight: 600; color: #1B2D4F; font-size: 14px; }
+    .host-location { font-size: 12px; color: #5a6a7e; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .detail-item { padding: 14px; background: #f9fafb; border-radius: 10px; }
+    .detail-item label { display: block; font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .detail-item p { font-size: 15px; font-weight: 600; color: #1B2D4F; }
+    .divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #244899; font-size: 14px; font-weight: 600; text-decoration: none; margin-bottom: 20px; cursor: pointer; }
+    .back-link:hover { color: #1B2D4F; }
+
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px; }
+    .page-btn { width: 36px; height: 36px; border: 2px solid #cdd8e4; background: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: #4b5563; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover { border-color: #244899; color: #244899; }
+    .page-btn.active { background: linear-gradient(135deg, #244899, #2D4BA3); border-color: #244899; color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Top Design Navigation -->
+  <div class="design-nav">
+    <span class="design-nav-title">M5 Designs:</span>
+    <button class="design-nav-btn active" onclick="showScreen(0);closeModals()">1. Outgoing Bookings</button>
+    <button class="design-nav-btn" onclick="showScreen(1);closeModals()">2. Incoming Requests</button>
+    <button class="design-nav-btn" onclick="showScreen(0);openModal('request')">3. Request Modal</button>
+    <button class="design-nav-btn" onclick="showScreen(1);openModal('request-detail')">4. Request Detail</button>
+    <button class="design-nav-btn" onclick="showScreen(1);openModal('reject')">5. Reject Modal</button>
+    <button class="design-nav-btn" onclick="showScreen(0);openModal('booking-detail')">6. Booking Detail</button>
+    <button class="design-nav-btn" onclick="showScreen(2);closeModals()">7. Ticket View</button>
+    <button class="design-nav-btn" onclick="showScreen(3);closeModals()">8. QR Full-Screen</button>
+    <button class="design-nav-btn" onclick="showScreen(4);closeModals()">9. Scanner</button>
+    <button class="design-nav-btn" onclick="showScreen(4);openModal('scan-confirm')">10. Scan Confirm</button>
+    <button class="design-nav-btn" onclick="showScreen(5);closeModals()">11. Redemption Success</button>
+    <button class="design-nav-btn" onclick="showScreen(4);openModal('scan-error')">12. Error States</button>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 1: My Bookings — Outgoing Tab         -->
+  <!-- ============================================ -->
+  <div class="screen active" id="screen0">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item active"><i class="fas fa-ticket-alt"></i> My Bookings <span class="nav-badge">3</span></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-qrcode"></i> Scan Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">My Bookings</h1><p class="page-subtitle">Track your experience requests and tickets</p></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card blue-tint"><div class="stat-icon blue"><i class="fas fa-list"></i></div><div><div class="stat-value">12</div><div class="stat-label">Total</div></div></div>
+        <div class="stat-card yellow-tint"><div class="stat-icon yellow"><i class="fas fa-clock"></i></div><div><div class="stat-value">3</div><div class="stat-label">Pending</div></div></div>
+        <div class="stat-card blue-tint"><div class="stat-icon blue"><i class="fas fa-check-circle"></i></div><div><div class="stat-value">3</div><div class="stat-label">Confirmed</div></div></div>
+        <div class="stat-card green-tint"><div class="stat-icon green"><i class="fas fa-check-double"></i></div><div><div class="stat-value">5</div><div class="stat-label">Used</div></div></div>
+        <div class="stat-card red-tint"><div class="stat-icon red"><i class="fas fa-times-circle"></i></div><div><div class="stat-value">1</div><div class="stat-label">Rejected</div></div></div>
+      </div>
+      <div class="tabs">
+        <button class="tab active">Outgoing Bookings</button>
+        <button class="tab" onclick="showScreen(1);closeModals();updateTabs(1)">Incoming Requests <span class="tab-count">2</span></button>
+      </div>
+      <div class="filters">
+        <select class="filter-select"><option>All Statuses</option><option>Pending</option><option>Confirmed</option><option>Used</option><option>Rejected</option></select>
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search bookings..."></div>
+      </div>
+      <div class="booking-list">
+        <!-- Pending -->
+        <div class="booking-card" onclick="openModal('booking-detail-pending')">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Spa Day Package</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> Nordic Wellness AS</div>
+            </div>
+            <span class="badge badge-pending"><i class="fas fa-circle"></i> Pending</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Kari Nordmann</p></div>
+            <div class="booking-card-field"><label>Preferred Date</label><p>Mar 15, 2026</p></div>
+            <div class="booking-card-field"><label>Requested</label><p>Mar 9, 2026</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 50 points</div>
+            <div class="booking-card-date">Awaiting host response</div>
+          </div>
+        </div>
+        <!-- Confirmed -->
+        <div class="booking-card" onclick="openModal('booking-detail')">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Team Dinner at Fjord Restaurant</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> Bergen Dining Co</div>
+            </div>
+            <span class="badge badge-confirmed"><i class="fas fa-circle"></i> Confirmed</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Ole Svendsen</p></div>
+            <div class="booking-card-field"><label>Preferred Date</label><p>Mar 10, 2026</p></div>
+            <div class="booking-card-field"><label>Approved</label><p>Mar 6, 2026</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 30 points</div>
+            <div class="booking-card-actions">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen(2);closeModals()"><i class="fas fa-ticket-alt"></i> View Ticket</button>
+            </div>
+          </div>
+        </div>
+        <!-- Used -->
+        <div class="booking-card">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Rock Climbing Session</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> Active Life AS</div>
+            </div>
+            <span class="badge badge-used"><i class="fas fa-circle"></i> Used</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Per Hansen</p></div>
+            <div class="booking-card-field"><label>Redeemed</label><p>Mar 5, 2026</p></div>
+            <div class="booking-card-field"><label>Points</label><p>35 pts deducted</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 35 points</div>
+            <div class="booking-card-date">Completed</div>
+          </div>
+        </div>
+        <!-- Rejected -->
+        <div class="booking-card">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Wine Tasting Evening</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> Vinbar Oslo AS</div>
+            </div>
+            <span class="badge badge-rejected"><i class="fas fa-circle"></i> Rejected</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Lise Berg</p></div>
+            <div class="booking-card-field"><label>Rejected</label><p>Mar 3, 2026</p></div>
+            <div class="booking-card-field"><label>Reason</label><p style="color:#991B1B;">Fully booked for March</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points" style="color:#9ca3af;"><i class="fas fa-coins"></i> 45 points</div>
+            <div class="booking-card-date">No points deducted</div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 2: My Bookings — Incoming Requests    -->
+  <!-- ============================================ -->
+  <div class="screen" id="screen1">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item active"><i class="fas fa-ticket-alt"></i> My Bookings <span class="nav-badge">2</span></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-qrcode"></i> Scan Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">My Bookings</h1><p class="page-subtitle">Manage incoming and outgoing requests</p></div>
+        <button class="btn btn-primary" onclick="showScreen(4);closeModals()"><i class="fas fa-qrcode"></i> Scan Ticket</button>
+      </div>
+      <div class="stats-grid stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="stat-card blue-tint"><div class="stat-icon blue"><i class="fas fa-inbox"></i></div><div><div class="stat-value">8</div><div class="stat-label">Total Incoming</div></div></div>
+        <div class="stat-card yellow-tint"><div class="stat-icon yellow"><i class="fas fa-clock"></i></div><div><div class="stat-value">2</div><div class="stat-label">Pending</div></div></div>
+        <div class="stat-card green-tint"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div><div class="stat-value">5</div><div class="stat-label">Approved</div></div></div>
+        <div class="stat-card red-tint"><div class="stat-icon red"><i class="fas fa-times-circle"></i></div><div><div class="stat-value">1</div><div class="stat-label">Rejected</div></div></div>
+      </div>
+      <div class="tabs">
+        <button class="tab" onclick="showScreen(0);closeModals()">Outgoing Bookings</button>
+        <button class="tab active">Incoming Requests <span class="tab-count">2</span></button>
+      </div>
+      <div class="filters">
+        <select class="filter-select"><option>All Statuses</option><option>Pending</option><option>Confirmed</option><option>Used</option><option>Rejected</option></select>
+        <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search requests..."></div>
+      </div>
+      <div class="booking-list">
+        <div class="booking-card" onclick="openModal('request-detail')">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Team Dinner at Fjord Restaurant</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> From: TechCorp AS</div>
+            </div>
+            <span class="badge badge-pending"><i class="fas fa-circle"></i> Pending</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Maria Olsen</p></div>
+            <div class="booking-card-field"><label>Preferred Date</label><p>Mar 20, 2026</p></div>
+            <div class="booking-card-field"><label>Submitted</label><p>Mar 8, 2026</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 30 points</div>
+            <div class="booking-card-actions">
+              <button class="btn btn-success btn-sm" onclick="event.stopPropagation()"><i class="fas fa-check"></i> Approve</button>
+              <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();openModal('reject')"><i class="fas fa-times"></i> Reject</button>
+            </div>
+          </div>
+        </div>
+        <div class="booking-card" onclick="openModal('request-detail')">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Spa Day Package</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> From: Startup Hub AS</div>
+            </div>
+            <span class="badge badge-pending"><i class="fas fa-circle"></i> Pending</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Erik Johansen</p></div>
+            <div class="booking-card-field"><label>Preferred Date</label><p>Mar 22, 2026</p></div>
+            <div class="booking-card-field"><label>Submitted</label><p>Mar 7, 2026</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 50 points</div>
+            <div class="booking-card-actions">
+              <button class="btn btn-success btn-sm" onclick="event.stopPropagation()"><i class="fas fa-check"></i> Approve</button>
+              <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();openModal('reject')"><i class="fas fa-times"></i> Reject</button>
+            </div>
+          </div>
+        </div>
+        <div class="booking-card">
+          <div class="booking-card-header">
+            <div>
+              <div class="booking-card-title">Team Dinner at Fjord Restaurant</div>
+              <div class="booking-card-sub"><i class="fas fa-building"></i> From: DesignLab AS</div>
+            </div>
+            <span class="badge badge-confirmed"><i class="fas fa-circle"></i> Confirmed</span>
+          </div>
+          <div class="booking-card-body">
+            <div class="booking-card-field"><label>Employee</label><p>Anna Berg</p></div>
+            <div class="booking-card-field"><label>Approved</label><p>Mar 4, 2026</p></div>
+            <div class="booking-card-field"><label>Preferred Date</label><p>Mar 12, 2026</p></div>
+          </div>
+          <div class="booking-card-footer">
+            <div class="booking-card-points"><i class="fas fa-coins"></i> 30 points</div>
+            <div class="booking-card-actions">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen(4);closeModals()"><i class="fas fa-qrcode"></i> Scan Ticket</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 3: Ticket View                        -->
+  <!-- ============================================ -->
+  <div class="screen" id="screen2">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item active"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-qrcode"></i> Scan Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a class="back-link" onclick="showScreen(0);closeModals()"><i class="fas fa-arrow-left"></i> Back to My Bookings</a>
+      <div class="ticket-container">
+        <div class="ticket-card">
+          <div class="ticket-header">
+            <div class="ticket-header-icon">🎫</div>
+            <h2>Your Ticket</h2>
+            <p>Show this to the host to redeem your experience</p>
+          </div>
+          <div class="ticket-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+              <span class="badge badge-confirmed" style="font-size:13px;padding:6px 14px;"><i class="fas fa-check-circle"></i> Confirmed</span>
+              <span style="font-size:13px;color:#9ca3af;">Ticket #TK-00247</span>
+            </div>
+            <div class="ticket-info-grid">
+              <div class="ticket-info-item"><label>Experience</label><p>Team Dinner at Fjord Restaurant</p></div>
+              <div class="ticket-info-item"><label>Host</label><p>Bergen Dining Co</p></div>
+              <div class="ticket-info-item"><label>Employee</label><p>Ole Svendsen</p></div>
+              <div class="ticket-info-item"><label>Preferred Date</label><p>March 10, 2026</p></div>
+              <div class="ticket-info-item"><label>Points</label><p>30 points</p></div>
+              <div class="ticket-info-item"><label>Category</label><p>🍽️ Dining · Oslo</p></div>
+            </div>
+            <hr class="ticket-divider">
+            <div class="qr-section">
+              <div class="qr-code"><i class="fas fa-qrcode" style="font-size:80px;color:#1B2D4F;"></i></div>
+              <div class="backup-code">A7K9M2</div>
+              <div class="backup-label">Backup Code</div>
+            </div>
+          </div>
+          <div class="ticket-footer">
+            <button class="btn btn-primary btn-lg btn-block" onclick="showScreen(3);closeModals()">
+              <i class="fas fa-expand"></i> Show to Host — Full Screen
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 4: QR Full-Screen Mode                -->
+  <!-- ============================================ -->
+  <div class="screen" id="screen3">
+    <div class="fullscreen-qr">
+      <div style="font-size:14px;opacity:0.6;margin-bottom:32px;">SwapJoys Ticket</div>
+      <div class="qr-code"><i class="fas fa-qrcode" style="font-size:120px;color:#1B2D4F;"></i></div>
+      <div class="backup-code">A7K9M2</div>
+      <div style="font-size:13px;opacity:0.6;">Backup Code</div>
+      <div class="hint">Show this to the host to redeem your experience</div>
+      <div class="close-hint" onclick="showScreen(2);closeModals()" style="cursor:pointer;">Tap anywhere to close</div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 5: Scanner Page                       -->
+  <!-- ============================================ -->
+  <div class="screen" id="screen4">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item active"><i class="fas fa-qrcode"></i> Scan Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div><h1 class="page-title">Scan Ticket</h1><p class="page-subtitle">Scan QR code or enter backup code to redeem experience</p></div>
+      </div>
+      <div class="scanner-container">
+        <div class="camera-preview">
+          <div class="scan-frame"></div>
+          <div class="scan-text">Point camera at QR code</div>
+        </div>
+        <div class="or-divider">OR</div>
+        <div class="manual-entry">
+          <input type="text" placeholder="A7K9M2" maxlength="6">
+          <button class="btn btn-primary" onclick="openModal('scan-confirm')"><i class="fas fa-check"></i> Verify</button>
+        </div>
+        <div class="recent-scans">
+          <h3><i class="fas fa-history"></i> Recent Scans</h3>
+          <div class="recent-item">
+            <div class="recent-icon"><i class="fas fa-check"></i></div>
+            <div class="recent-info">
+              <strong>Spa Day Package — K. Nordmann</strong>
+              <span>TechCorp AS · Redeemed just now</span>
+            </div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon"><i class="fas fa-check"></i></div>
+            <div class="recent-info">
+              <strong>Rock Climbing Session — P. Hansen</strong>
+              <span>DesignLab AS · Redeemed 2 hours ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- SCREEN 6: Redemption Success                 -->
+  <!-- ============================================ -->
+  <div class="screen" id="screen5">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item active"><i class="fas fa-qrcode"></i> Scan Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="success-screen">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <h2>Experience Redeemed!</h2>
+        <div class="points-badge"><i class="fas fa-coins"></i> +50 points</div>
+        <div class="success-details">
+          <div class="detail-row"><label>Experience</label><span>Spa Day Package</span></div>
+          <div class="detail-row"><label>Employee</label><span>Kari Nordmann</span></div>
+          <div class="detail-row"><label>Company</label><span>TechCorp AS</span></div>
+          <div class="detail-row"><label>Redeemed</label><span>Mar 10, 2026 at 14:30</span></div>
+          <div class="detail-row"><label>Est. Value</label><span>500 NOK</span></div>
+          <div class="detail-row"><label>Welfare Benefit</label><span>Yes</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <button class="btn btn-primary btn-block" onclick="showScreen(4);closeModals()"><i class="fas fa-qrcode"></i> Scan Another Ticket</button>
+          <button class="btn btn-outline btn-block" onclick="showScreen(1);closeModals()"><i class="fas fa-arrow-left"></i> Back to Bookings</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODALS                                       -->
+  <!-- ============================================ -->
+
+  <!-- Modal: Request Experience -->
+  <div class="modal-overlay hidden" id="modal-request" onclick="if(event.target===this)closeModals()">
+    <div class="modal modal-lg">
+      <div class="modal-header blue-header">
+        <span class="modal-title"><i class="fas fa-paper-plane"></i> Request Experience</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-box info-blue">
+          <i class="fas fa-info-circle"></i>
+          <div><strong>Spa Day Package</strong> · Nordic Wellness AS · <strong>50 points</strong><br>Your balance: <strong>1,250 points</strong> — Sufficient ✅</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Employee <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">Choose employee</option>
+            <option>Kari Nordmann</option>
+            <option>Ole Svendsen</option>
+            <option>Per Hansen</option>
+            <option>Lise Berg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Date <span class="required">*</span></label>
+          <input type="date" class="form-input" min="2026-03-09">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message to Host (optional)</label>
+          <textarea class="form-textarea" placeholder="e.g. We'd love to attend on a Friday afternoon if possible."></textarea>
+          <p class="form-hint"><i class="fas fa-info-circle"></i> Max 500 characters</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Cancel</button>
+        <button class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Request Detail (Incoming — Host View) -->
+  <div class="modal-overlay hidden" id="modal-request-detail" onclick="if(event.target===this)closeModals()">
+    <div class="modal modal-lg">
+      <div class="modal-header blue-header">
+        <span class="modal-title"><i class="fas fa-inbox"></i> Incoming Request</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:16px;"><span class="badge badge-pending" style="font-size:13px;padding:6px 14px;"><i class="fas fa-clock"></i> Pending</span></div>
+        <div class="detail-section">
+          <div class="detail-section-label">Experience</div>
+          <div class="detail-section-value" style="font-size:18px;font-weight:700;">Team Dinner at Fjord Restaurant</div>
+          <div style="margin-top:6px;display:flex;gap:8px;"><span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span><span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span><span style="font-weight:600;color:#244899;font-size:14px;">30 points</span></div>
+        </div>
+        <hr class="divider">
+        <div class="detail-section-label">Requesting Company</div>
+        <div class="host-card">
+          <div class="host-avatar">TC</div>
+          <div><div class="host-name">TechCorp AS</div><div class="host-location">Oslo, Norway · Balance: 450 points</div></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Assigned Employee</label><p>Maria Olsen</p></div>
+          <div class="detail-item"><label>Preferred Date</label><p>📅 March 20, 2026</p></div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-section-label">Message</div>
+          <div class="detail-section-value" style="font-weight:400;font-style:italic;color:#5a6a7e;">"We'd love to book this for our team lead as a reward for Q1 performance."</div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-section-label">Submitted</div>
+          <div class="detail-section-value" style="font-size:13px;color:#5a6a7e;">March 8, 2026 at 14:32</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" onclick="closeModals();openModal('reject')"><i class="fas fa-times"></i> Reject</button>
+        <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reject Request -->
+  <div class="modal-overlay hidden" id="modal-reject" onclick="if(event.target===this)closeModals()">
+    <div class="modal">
+      <div class="modal-header red-header">
+        <span class="modal-title"><i class="fas fa-times-circle"></i> Reject Request</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-box info-yellow">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>You're rejecting the request from <strong>TechCorp AS</strong> for <strong>"Team Dinner at Fjord Restaurant"</strong>. The requesting company will be notified with your reason.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reason for rejection <span class="required">*</span></label>
+          <textarea class="form-textarea" placeholder="e.g. Fully booked for March. Please try again for April availability."></textarea>
+          <p class="form-hint"><i class="fas fa-info-circle"></i> Min 10 characters · Max 500 characters</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Cancel</button>
+        <button class="btn btn-danger"><i class="fas fa-times"></i> Confirm Rejection</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Booking Detail (Outgoing — Confirmed) -->
+  <div class="modal-overlay hidden" id="modal-booking-detail" onclick="if(event.target===this)closeModals()">
+    <div class="modal modal-lg">
+      <div class="modal-header blue-header">
+        <span class="modal-title"><i class="fas fa-ticket-alt"></i> Booking Detail</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:16px;"><span class="badge badge-confirmed" style="font-size:13px;padding:6px 14px;"><i class="fas fa-check-circle"></i> Confirmed</span></div>
+        <div class="detail-section">
+          <div class="detail-section-label">Experience</div>
+          <div class="detail-section-value" style="font-size:18px;font-weight:700;">Team Dinner at Fjord Restaurant</div>
+          <div style="margin-top:6px;display:flex;gap:8px;"><span class="badge badge-dining"><i class="fas fa-utensils"></i> Dining</span><span class="badge badge-city"><i class="fas fa-map-marker-alt"></i> Oslo</span></div>
+        </div>
+        <hr class="divider">
+        <div class="detail-section-label">Host Company</div>
+        <div class="host-card">
+          <div class="host-avatar">BD</div>
+          <div><div class="host-name">Bergen Dining Co</div><div class="host-location">Oslo, Norway</div></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Assigned Employee</label><p>Ole Svendsen</p></div>
+          <div class="detail-item"><label>Preferred Date</label><p>📅 March 10, 2026</p></div>
+          <div class="detail-item"><label>Points Deducted</label><p style="color:#dc2626;">−30 points</p></div>
+          <div class="detail-item"><label>Approved On</label><p>March 6, 2026</p></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Close</button>
+        <button class="btn btn-primary" onclick="closeModals();showScreen(2)"><i class="fas fa-ticket-alt"></i> View Ticket & QR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Scan Confirmation -->
+  <div class="modal-overlay hidden" id="modal-scan-confirm" onclick="if(event.target===this)closeModals()">
+    <div class="modal">
+      <div class="modal-header green-header">
+        <span class="modal-title"><i class="fas fa-ticket-alt"></i> Ticket Found!</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-box info-green">
+          <i class="fas fa-check-circle"></i>
+          <div>Valid ticket — ready to redeem</div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Experience</label><p>Spa Day Package</p></div>
+          <div class="detail-item"><label>Category</label><p>💆 Wellness · Bergen</p></div>
+          <div class="detail-item"><label>Employee</label><p>Kari Nordmann</p></div>
+          <div class="detail-item"><label>Company</label><p>TechCorp AS</p></div>
+        </div>
+        <div class="info-box info-blue">
+          <i class="fas fa-coins"></i>
+          <div><strong>+50 points</strong> will be credited to your balance</div>
+        </div>
+        <div class="info-box info-yellow">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>This action cannot be undone.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModals()">Cancel</button>
+        <button class="btn btn-success btn-lg" onclick="closeModals();showScreen(5)"><i class="fas fa-check"></i> Confirm Redemption</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Scan Error -->
+  <div class="modal-overlay hidden" id="modal-scan-error" onclick="if(event.target===this)closeModals()">
+    <div class="modal">
+      <div class="modal-header red-header">
+        <span class="modal-title"><i class="fas fa-exclamation-circle"></i> Ticket Already Redeemed</span>
+        <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-box info-red">
+          <i class="fas fa-times-circle"></i>
+          <div>This ticket was already redeemed on <strong>March 8, 2026 at 14:15</strong></div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Experience</label><p>Spa Day Package</p></div>
+          <div class="detail-item"><label>Employee</label><p>Kari Nordmann</p></div>
+          <div class="detail-item"><label>Company</label><p>TechCorp AS</p></div>
+          <div class="detail-item"><label>Status</label><p><span class="badge badge-used"><i class="fas fa-check-double"></i> Used</span></p></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModals()"><i class="fas fa-qrcode"></i> Scan Another</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showScreen(index) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen' + index).classList.add('active');
+      document.querySelectorAll('.design-nav-btn').forEach(b => b.classList.remove('active'));
+    }
+
+    function openModal(id) {
+      closeModals();
+      const el = document.getElementById('modal-' + id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
+    }
+
+    // Update nav button highlighting
+    document.querySelectorAll('.design-nav-btn').forEach((btn, i) => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.design-nav-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
