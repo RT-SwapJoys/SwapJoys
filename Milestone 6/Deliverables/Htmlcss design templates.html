@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapJoys - Milestone 6 HTML/CSS Designs</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F2F3F8; min-height: 100vh; }
+    
+    .design-nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 10px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); z-index: 1000; flex-wrap: wrap; }
+    .design-nav-title { font-weight: 700; color: #1B2D4F; font-size: 13px; margin-right: 8px; }
+    .design-nav-btn { padding: 6px 12px; border: none; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: #f3f4f6; color: #5a6a7e; white-space: nowrap; }
+    .design-nav-btn:hover { background: #e5e7eb; }
+    .design-nav-btn.active { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; }
+    
+    .screen { display: none; padding-top: 60px; min-height: 100vh; }
+    .screen.active { display: block; }
+    
+    .sidebar { width: 250px; background: linear-gradient(180deg, #1B2D4F 0%, #223759 100%); min-height: calc(100vh - 60px); position: fixed; left: 0; top: 60px; padding: 20px 0; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+    .logo { padding: 0 20px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+    .logo-icon { width: 42px; height: 42px; background: #E8761E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; font-weight: 700; }
+    .logo-text { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .logo-text span { color: #E8761E; }
+    .nav-section { padding: 0 12px; margin-bottom: 20px; }
+    .nav-label { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.7); text-decoration: none; border-radius: 8px; margin-bottom: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-item.active { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; }
+    .nav-item i { width: 20px; text-align: center; }
+    
+    .main { margin-left: 250px; padding: 24px; }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #1B2D4F; }
+    .page-subtitle { color: #5a6a7e; font-size: 14px; margin-top: 4px; }
+    
+    .btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; box-shadow: 0 4px 15px rgba(36,72,153,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(36,72,153,0.4); }
+    .btn-secondary { background: #f3f4f6; color: #374151; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+    
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); display: flex; align-items: flex-start; gap: 16px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: #1B2D4F; }
+    .stat-label { color: #5a6a7e; font-size: 13px; margin-top: 2px; }
+    .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .stat-icon.blue { background: rgba(36,72,153,0.1); color: #244899; }
+    .stat-icon.green { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .stat-icon.orange { background: rgba(249,115,22,0.1); color: #f97316; }
+    .stat-icon.purple { background: rgba(168,85,247,0.1); color: #a855f7; }
+    
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-size: 16px; font-weight: 600; color: #1B2D4F; }
+    .card-body { padding: 20px 24px; }
+    
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab { padding: 8px 16px; border: 2px solid #cdd8e4; background: #fff; border-radius: 10px; font-size: 13px; font-weight: 600; color: #5a6a7e; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .tab:hover { border-color: #244899; color: #244899; }
+    .tab.active { background: linear-gradient(135deg, #244899, #2D4BA3); border-color: #244899; color: #fff; }
+    
+    .filters { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .search-box { position: relative; }
+    .search-box input { padding: 10px 14px 10px 38px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; width: 240px; background: #f9fafb; transition: all 0.2s; outline: none; }
+    .search-box input:focus { border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); }
+    .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+    .filter-select { padding: 10px 32px 10px 14px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a6a7e' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; cursor: pointer; outline: none; }
+    .filter-select:focus { border-color: #244899; }
+    
+    .table { width: 100%; border-collapse: collapse; }
+    .table th { text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600; color: #5a6a7e; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f3f4f6; }
+    .table td { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; }
+    .table tr:hover { background: #f9fafb; cursor: pointer; }
+    .table .points-positive { color: #16a34a; font-weight: 700; }
+    .table .points-negative { color: #dc2626; font-weight: 700; }
+    
+    .type-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .type-badge.credit { background: #dcfce7; color: #16a34a; }
+    .type-badge.debit { background: #fee2e2; color: #dc2626; }
+    .type-badge.bonus { background: #fef3c7; color: #d97706; }
+    .type-badge.admin { background: #e0e7ff; color: #244899; }
+    
+    .view-link { color: #244899; font-weight: 600; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .view-link:hover { text-decoration: underline; }
+    
+    .balance-highlight { background: linear-gradient(135deg, #244899, #2D4BA3); color: #fff; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 30px rgba(36,72,153,0.25); }
+    .balance-highlight .bal-value { font-size: 42px; font-weight: 800; }
+    .balance-highlight .bal-label { font-size: 14px; opacity: 0.8; margin-top: 4px; }
+    .balance-highlight .bal-icon { font-size: 48px; opacity: 0.3; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1001; }
+    .modal { background: #fff; border-radius: 20px; width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+    .modal-header { padding: 24px 24px 0; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 18px; font-weight: 700; color: #1B2D4F; display: flex; align-items: center; gap: 8px; }
+    .modal-close { width: 36px; height: 36px; border: none; background: #f3f4f6; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #5a6a7e; }
+    .modal-close:hover { background: #e5e7eb; }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 0 24px 24px; display: flex; gap: 12px; justify-content: flex-end; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 16px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; background: #f9fafb; transition: all 0.2s; outline: none; }
+    .form-input:focus { border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); }
+    .form-textarea { width: 100%; padding: 12px 16px; border: 2px solid #cdd8e4; border-radius: 10px; font-size: 14px; min-height: 80px; resize: vertical; transition: all 0.2s; font-family: inherit; background: #f9fafb; outline: none; }
+    .form-textarea:focus { border-color: #244899; box-shadow: 0 0 0 3px rgba(36,72,153,0.1); }
+    .form-hint { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+    .form-readonly { background: #f3f4f6; color: #5a6a7e; cursor: default; }
+
+    .radio-group { display: flex; gap: 12px; }
+    .radio-option { flex: 1; }
+    .radio-option input { display: none; }
+    .radio-option label { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 2px solid #cdd8e4; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; }
+    .radio-option input:checked + label.add { border-color: #16a34a; background: #f0fdf4; color: #16a34a; }
+    .radio-option input:checked + label.remove { border-color: #dc2626; background: #fef2f2; color: #dc2626; }
+
+    .preview-box { background: #e0f2fe; border: 2px solid #7dd3fc; border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .preview-box .preview-label { font-size: 13px; color: #0369a1; font-weight: 500; }
+    .preview-box .preview-value { font-size: 18px; font-weight: 700; color: #0c4a6e; }
+
+    /* Detail Card */
+    .detail-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); max-width: 600px; overflow: hidden; }
+    .detail-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .detail-type { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 15px; }
+    .detail-type.credit { background: #dcfce7; color: #16a34a; }
+    .detail-type.debit { background: #fee2e2; color: #dc2626; }
+    .detail-points { font-size: 22px; font-weight: 800; }
+    .detail-body { padding: 0 24px 24px; }
+    .detail-row { display: flex; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
+    .detail-label { width: 160px; color: #5a6a7e; font-size: 14px; font-weight: 500; flex-shrink: 0; }
+    .detail-value { color: #1B2D4F; font-size: 14px; font-weight: 600; }
+    .detail-reason { background: #f9fafb; border-radius: 10px; padding: 16px; margin-top: 16px; }
+    .detail-reason-label { font-size: 13px; font-weight: 600; color: #5a6a7e; margin-bottom: 8px; }
+    .detail-reason-text { font-size: 14px; color: #374151; line-height: 1.6; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: #244899; font-weight: 600; font-size: 14px; text-decoration: none; margin-bottom: 20px; }
+    .back-link:hover { text-decoration: underline; }
+
+    .pagination { display: flex; gap: 4px; justify-content: center; margin-top: 20px; }
+    .pagination button { width: 36px; height: 36px; border: 2px solid #cdd8e4; background: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; color: #5a6a7e; cursor: pointer; }
+    .pagination button:hover:not(.active) { background: #f3f4f6; }
+    .pagination button.active { background: linear-gradient(135deg, #244899, #2D4BA3); border-color: #244899; color: #fff; }
+
+    .status-active { background: #dcfce7; color: #16a34a; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; }
+  </style>
+</head>
+<body>
+  <!-- Design Navigation -->
+  <div class="design-nav">
+    <span class="design-nav-title">M6 Designs:</span>
+    <button class="design-nav-btn active" data-screen="screen1">Points Dashboard</button>
+    <button class="design-nav-btn" data-screen="screen2">Transaction History</button>
+    <button class="design-nav-btn" data-screen="screen3">Transaction Detail</button>
+    <button class="design-nav-btn" data-screen="screen4">Admin - Adjustments</button>
+    <button class="design-nav-btn" data-screen="screen5">Admin - Adjust Modal</button>
+    <button class="design-nav-btn" data-screen="screen6">Admin - History</button>
+    <button class="design-nav-btn" data-screen="screen7">Admin - Detail</button>
+  </div>
+
+  <!-- Screen 1: Points & Balance Dashboard -->
+  <div class="screen active" id="screen1">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">Swap<span>Joy</span></div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+        <div class="nav-item active"><i class="fas fa-coins"></i> Points & Balance</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Points & Balance</h1>
+          <p class="page-subtitle">Track your company's point activity and balance</p>
+        </div>
+      </div>
+
+      <div class="balance-highlight">
+        <div>
+          <div class="bal-value">1,250</div>
+          <div class="bal-label">Current Available Balance</div>
+        </div>
+        <i class="fas fa-coins bal-icon"></i>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-arrow-down"></i></div>
+          <div>
+            <div class="stat-value">2,450</div>
+            <div class="stat-label">Total Points Earned</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange"><i class="fas fa-arrow-up"></i></div>
+          <div>
+            <div class="stat-value">1,200</div>
+            <div class="stat-label">Total Points Spent</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="stat-value">150</div>
+            <div class="stat-label">Pending in Bookings</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-exchange-alt"></i></div>
+          <div>
+            <div class="stat-value">47</div>
+            <div class="stat-label">Total Transactions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Recent Transactions</span>
+          <a href="#" class="view-link">View All →</a>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 17</div><div style="font-size:12px;color:#9ca3af">14:30</div></td>
+                <td><span class="type-badge credit"><i class="fas fa-arrow-down"></i> Credit</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Spa Day Package</div><div style="font-size:12px;color:#9ca3af">from Nordic Wellness AS</div></td>
+                <td class="points-positive">+50</td>
+                <td style="font-weight:600;color:#1B2D4F">1,250</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 15</div><div style="font-size:12px;color:#9ca3af">10:15</div></td>
+                <td><span class="type-badge debit"><i class="fas fa-arrow-up"></i> Debit</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Team Lunch Experience</div><div style="font-size:12px;color:#9ca3af">to FoodCorp AS</div></td>
+                <td class="points-negative">-30</td>
+                <td style="font-weight:600;color:#1B2D4F">1,200</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 12</div><div style="font-size:12px;color:#9ca3af">09:00</div></td>
+                <td><span class="type-badge admin"><i class="fas fa-cog"></i> Admin</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Bonus Credit</div><div style="font-size:12px;color:#9ca3af">SwapJoys Admin</div></td>
+                <td class="points-positive">+100</td>
+                <td style="font-weight:600;color:#1B2D4F">1,230</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 10</div><div style="font-size:12px;color:#9ca3af">11:45</div></td>
+                <td><span class="type-badge debit"><i class="fas fa-arrow-up"></i> Debit</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Gym Session Pass</div><div style="font-size:12px;color:#9ca3af">to FitNord AS</div></td>
+                <td class="points-negative">-25</td>
+                <td style="font-weight:600;color:#1B2D4F">1,130</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Jan 15</div><div style="font-size:12px;color:#9ca3af">10:00</div></td>
+                <td><span class="type-badge bonus"><i class="fas fa-gift"></i> Bonus</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Welcome Bonus</div><div style="font-size:12px;color:#9ca3af">Registration reward</div></td>
+                <td class="points-positive">+50</td>
+                <td style="font-weight:600;color:#1B2D4F">50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 2: Transaction History -->
+  <div class="screen" id="screen2">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+        <div class="nav-item active"><i class="fas fa-coins"></i> Points & Balance</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div>
+      </div>
+    </aside>
+    <main class="main">
+      <a href="#" class="back-link"><i class="fas fa-arrow-left"></i> Back to Points & Balance</a>
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Transaction History</h1>
+          <p class="page-subtitle">Complete history of all point movements</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="filters">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search transactions...">
+            </div>
+            <select class="filter-select">
+              <option>All Types</option>
+              <option>Welcome Bonus</option>
+              <option>Booking Deduction</option>
+              <option>Redemption Credit</option>
+              <option>Admin Adjustment</option>
+            </select>
+            <input type="date" class="form-input" style="width:150px;padding:9px 12px">
+            <span style="color:#9ca3af">to</span>
+            <input type="date" class="form-input" style="width:150px;padding:9px 12px">
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Balance After</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 17, 2026</div><div style="font-size:12px;color:#9ca3af">14:30</div></td>
+                <td><span class="type-badge credit"><i class="fas fa-arrow-down"></i> Redemption Credit</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Spa Day Package</div><div style="font-size:12px;color:#9ca3af">Nordic Wellness AS</div></td>
+                <td class="points-positive">+50</td>
+                <td style="font-weight:600;color:#1B2D4F">1,250</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 15, 2026</div><div style="font-size:12px;color:#9ca3af">10:15</div></td>
+                <td><span class="type-badge debit"><i class="fas fa-arrow-up"></i> Booking Deduction</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Team Lunch Experience</div><div style="font-size:12px;color:#9ca3af">FoodCorp AS</div></td>
+                <td class="points-negative">-30</td>
+                <td style="font-weight:600;color:#1B2D4F">1,200</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 12, 2026</div><div style="font-size:12px;color:#9ca3af">09:00</div></td>
+                <td><span class="type-badge admin"><i class="fas fa-cog"></i> Admin Adjustment</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Promotional bonus credit</div><div style="font-size:12px;color:#9ca3af">SwapJoys Admin</div></td>
+                <td class="points-positive">+100</td>
+                <td style="font-weight:600;color:#1B2D4F">1,230</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 10, 2026</div><div style="font-size:12px;color:#9ca3af">11:45</div></td>
+                <td><span class="type-badge debit"><i class="fas fa-arrow-up"></i> Booking Deduction</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Gym Session Pass</div><div style="font-size:12px;color:#9ca3af">FitNord AS</div></td>
+                <td class="points-negative">-25</td>
+                <td style="font-weight:600;color:#1B2D4F">1,130</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 05, 2026</div><div style="font-size:12px;color:#9ca3af">16:20</div></td>
+                <td><span class="type-badge credit"><i class="fas fa-arrow-down"></i> Redemption Credit</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Cooking Class</div><div style="font-size:12px;color:#9ca3af">TechCorp AS</div></td>
+                <td class="points-positive">+35</td>
+                <td style="font-weight:600;color:#1B2D4F">1,155</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Jan 15, 2026</div><div style="font-size:12px;color:#9ca3af">10:00</div></td>
+                <td><span class="type-badge bonus"><i class="fas fa-gift"></i> Welcome Bonus</span></td>
+                <td><div style="font-weight:600;color:#1B2D4F">Registration reward</div><div style="font-size:12px;color:#9ca3af">System</div></td>
+                <td class="points-positive">+50</td>
+                <td style="font-weight:600;color:#1B2D4F">50</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>→</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 3: Transaction Detail -->
+  <div class="screen" id="screen3">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div><div class="nav-item"><i class="fas fa-store"></i> Marketplace</div><div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div><div class="nav-item active"><i class="fas fa-coins"></i> Points & Balance</div></div>
+    </aside>
+    <main class="main">
+      <a href="#" class="back-link"><i class="fas fa-arrow-left"></i> Back to Transaction History</a>
+      <div class="detail-card">
+        <div class="detail-header">
+          <span class="detail-type credit"><i class="fas fa-arrow-down"></i> Redemption Credit</span>
+          <span class="detail-points points-positive">+50</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-row"><span class="detail-label">Transaction ID</span><span class="detail-value">TXN-2026-0342</span></div>
+          <div class="detail-row"><span class="detail-label">Date & Time</span><span class="detail-value">March 17, 2026 at 14:30</span></div>
+          <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">Redemption Credit</span></div>
+          <div class="detail-row"><span class="detail-label">Experience</span><span class="detail-value">Spa Day Package</span></div>
+          <div class="detail-row"><span class="detail-label">Points</span><span class="detail-value points-positive">+50</span></div>
+          <div class="detail-row"><span class="detail-label">Balance Before</span><span class="detail-value">1,200</span></div>
+          <div class="detail-row"><span class="detail-label">Balance After</span><span class="detail-value">1,250</span></div>
+          <div class="detail-row" style="border:none"><span class="detail-label">Other Party</span><span class="detail-value">Nordic Wellness AS</span></div>
+          <div class="detail-reason">
+            <div class="detail-reason-label">Notes</div>
+            <div class="detail-reason-text">Ticket SPA7K2 redeemed by employee Kari Nordmann on March 17, 2026.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 4: Admin - Point Adjustments -->
+  <div class="screen" id="screen4">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section">
+        <div class="nav-label">Main Menu</div>
+        <div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-store"></i> Marketplace</div>
+        <div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div>
+        <div class="nav-item"><i class="fas fa-coins"></i> Points & Balance</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Management</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Employees</div>
+        <div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div>
+        <div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Admin Panel</div>
+        <div class="nav-item active"><i class="fas fa-sliders-h"></i> Point Adjustments</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Point Adjustments</h1>
+          <p class="page-subtitle">Manually adjust company point balances</p>
+        </div>
+      </div>
+      <div class="tabs">
+        <span class="tab active">Adjustments</span>
+        <span class="tab">Adjustment History</span>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="filters">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search companies...">
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Org Number</th>
+                <th>Status</th>
+                <th>Current Balance</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600;color:#1B2D4F">TechCorp AS</td>
+                <td style="color:#5a6a7e">912 345 678</td>
+                <td><span class="status-active">Active</span></td>
+                <td style="font-weight:700;color:#1B2D4F">1,250</td>
+                <td><button class="btn btn-primary btn-sm"><i class="fas fa-sliders-h"></i> Adjust</button></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;color:#1B2D4F">Nordic Wellness AS</td>
+                <td style="color:#5a6a7e">923 456 789</td>
+                <td><span class="status-active">Active</span></td>
+                <td style="font-weight:700;color:#1B2D4F">830</td>
+                <td><button class="btn btn-primary btn-sm"><i class="fas fa-sliders-h"></i> Adjust</button></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;color:#1B2D4F">FoodCorp AS</td>
+                <td style="color:#5a6a7e">934 567 890</td>
+                <td><span class="status-active">Active</span></td>
+                <td style="font-weight:700;color:#1B2D4F">420</td>
+                <td><button class="btn btn-primary btn-sm"><i class="fas fa-sliders-h"></i> Adjust</button></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;color:#1B2D4F">FitNord AS</td>
+                <td style="color:#5a6a7e">945 678 901</td>
+                <td><span class="status-active">Active</span></td>
+                <td style="font-weight:700;color:#1B2D4F">95</td>
+                <td><button class="btn btn-primary btn-sm"><i class="fas fa-sliders-h"></i> Adjust</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 5: Admin - Adjustment Modal -->
+  <div class="screen" id="screen5">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div><div class="nav-item"><i class="fas fa-store"></i> Marketplace</div><div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div><div class="nav-item"><i class="fas fa-coins"></i> Points & Balance</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item"><i class="fas fa-users"></i> Employees</div><div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div><div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div></div>
+      <div class="nav-section"><div class="nav-label">Admin Panel</div><div class="nav-item active"><i class="fas fa-sliders-h"></i> Point Adjustments</div></div>
+    </aside>
+    <main class="main" style="position:relative">
+      <div class="modal-overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-sliders-h" style="color:#244899"></i> Adjust Points</span>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Company</label>
+              <input type="text" class="form-input form-readonly" value="TechCorp AS" readonly>
+            </div>
+            <div style="background:#e0f2fe;border-radius:10px;padding:12px 16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px;color:#0369a1;font-weight:500">Current Balance</span>
+              <span style="font-size:20px;font-weight:700;color:#0c4a6e">1,250 points</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Adjustment Type *</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" name="type" id="add" checked>
+                  <label for="add" class="add"><i class="fas fa-plus-circle"></i> Add Points</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" name="type" id="remove">
+                  <label for="remove" class="remove"><i class="fas fa-minus-circle"></i> Remove Points</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Amount *</label>
+              <input type="number" class="form-input" placeholder="Enter point amount" value="100">
+            </div>
+            <div class="preview-box" style="margin-bottom:20px">
+              <span class="preview-label">New Balance Preview</span>
+              <span class="preview-value">1,350 points</span>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Reason *</label>
+              <textarea class="form-textarea" placeholder="Enter reason for adjustment (min 10 characters)">Promotional bonus for pilot participation</textarea>
+              <div class="form-hint">Min 10 characters, max 500 characters</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-primary"><i class="fas fa-check"></i> Apply Adjustment</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 6: Admin - Adjustment History -->
+  <div class="screen" id="screen6">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div><div class="nav-item"><i class="fas fa-store"></i> Marketplace</div><div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div><div class="nav-item"><i class="fas fa-coins"></i> Points & Balance</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item"><i class="fas fa-users"></i> Employees</div><div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div><div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div></div>
+      <div class="nav-section"><div class="nav-label">Admin Panel</div><div class="nav-item active"><i class="fas fa-sliders-h"></i> Point Adjustments</div></div>
+    </aside>
+    <main class="main">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Point Adjustments</h1>
+          <p class="page-subtitle">Audit trail of all admin point adjustments</p>
+        </div>
+      </div>
+      <div class="tabs">
+        <span class="tab">Adjustments</span>
+        <span class="tab active">Adjustment History</span>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="filters">
+            <select class="filter-select"><option>All Companies</option><option>TechCorp AS</option><option>Nordic Wellness AS</option><option>FoodCorp AS</option><option>FitNord AS</option></select>
+            <select class="filter-select"><option>All Types</option><option>Add</option><option>Remove</option></select>
+            <input type="date" class="form-input" style="width:150px;padding:9px 12px">
+            <span style="color:#9ca3af">to</span>
+            <input type="date" class="form-input" style="width:150px;padding:9px 12px">
+          </div>
+          <table class="table">
+            <thead>
+              <tr><th>Date</th><th>Admin</th><th>Company</th><th>Type</th><th>Amount</th><th>Reason</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 12</div><div style="font-size:12px;color:#9ca3af">09:00</div></td>
+                <td style="font-weight:600;color:#1B2D4F">Admin Selim</td>
+                <td style="color:#1B2D4F">TechCorp AS</td>
+                <td><span class="type-badge credit"><i class="fas fa-plus"></i> Add</span></td>
+                <td class="points-positive">+100</td>
+                <td style="color:#5a6a7e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Promotional bonus for pilot participation</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Mar 08</div><div style="font-size:12px;color:#9ca3af">14:20</div></td>
+                <td style="font-weight:600;color:#1B2D4F">Admin Selim</td>
+                <td style="color:#1B2D4F">FitNord AS</td>
+                <td><span class="type-badge credit"><i class="fas fa-plus"></i> Add</span></td>
+                <td class="points-positive">+50</td>
+                <td style="color:#5a6a7e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Pilot program early participant bonus</td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;color:#1B2D4F">Feb 28</div><div style="font-size:12px;color:#9ca3af">11:30</div></td>
+                <td style="font-weight:600;color:#1B2D4F">Admin Selim</td>
+                <td style="color:#1B2D4F">Nordic Wellness AS</td>
+                <td><span class="type-badge debit"><i class="fas fa-minus"></i> Remove</span></td>
+                <td class="points-negative">-20</td>
+                <td style="color:#5a6a7e;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Correction for duplicate credit entry</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button class="active">1</button>
+            <button>2</button>
+            <button>→</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Screen 7: Admin - Adjustment Detail -->
+  <div class="screen" id="screen7">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-icon">S</div><div class="logo-text">Swap<span>Joy</span></div></div>
+      <div class="nav-section"><div class="nav-label">Main Menu</div><div class="nav-item"><i class="fas fa-th-large"></i> Dashboard</div><div class="nav-item"><i class="fas fa-store"></i> Marketplace</div><div class="nav-item"><i class="fas fa-ticket-alt"></i> My Bookings</div><div class="nav-item"><i class="fas fa-coins"></i> Points & Balance</div></div>
+      <div class="nav-section"><div class="nav-label">Management</div><div class="nav-item"><i class="fas fa-users"></i> Employees</div><div class="nav-item"><i class="fas fa-calendar-plus"></i> Experiences</div><div class="nav-item"><i class="fas fa-keyboard"></i> Redeem Ticket</div></div>
+      <div class="nav-section"><div class="nav-label">Admin Panel</div><div class="nav-item active"><i class="fas fa-sliders-h"></i> Point Adjustments</div></div>
+    </aside>
+    <main class="main">
+      <a href="#" class="back-link"><i class="fas fa-arrow-left"></i> Back to Adjustment History</a>
+      <div class="detail-card">
+        <div class="detail-header">
+          <span class="detail-type credit"><i class="fas fa-cog"></i> Admin Adjustment (Add)</span>
+          <span class="detail-points points-positive">+100</span>
+        </div>
+        <div class="detail-body">
+          <div class="detail-row"><span class="detail-label">Adjustment ID</span><span class="detail-value">ADJ-2026-0015</span></div>
+          <div class="detail-row"><span class="detail-label">Date & Time</span><span class="detail-value">March 12, 2026 at 09:00</span></div>
+          <div class="detail-row"><span class="detail-label">Admin</span><span class="detail-value">Admin Selim</span></div>
+          <div class="detail-row"><span class="detail-label">Company</span><span class="detail-value">TechCorp AS</span></div>
+          <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">Add Points</span></div>
+          <div class="detail-row"><span class="detail-label">Amount</span><span class="detail-value points-positive">+100 points</span></div>
+          <div class="detail-row"><span class="detail-label">Balance Before</span><span class="detail-value">1,130</span></div>
+          <div class="detail-row" style="border:none"><span class="detail-label">Balance After</span><span class="detail-value">1,230</span></div>
+          <div class="detail-reason">
+            <div class="detail-reason-label">Reason</div>
+            <div class="detail-reason-text">Promotional bonus for pilot participation. Company joined as early adopter during the SwapJoys launch phase.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // --- Core screen switching ---
+    function showScreen(id, navBtn) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.design-nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (navBtn) {
+        navBtn.classList.add('active');
+      } else {
+        // Find matching nav button by screen index
+        const screenNum = id.replace('screen', '');
+        const btns = document.querySelectorAll('.design-nav-btn');
+        const idx = parseInt(screenNum) - 1;
+        if (btns[idx]) btns[idx].classList.add('active');
+      }
+      window.scrollTo(0, 0);
+    }
+
+    // --- Top design nav buttons ---
+    document.querySelectorAll('.design-nav-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const screenId = this.getAttribute('data-screen');
+        if (screenId) {
+          e.preventDefault();
+          showScreen(screenId, this);
+        }
+      });
+    });
+
+    // --- "View All →" link on Screen 1 goes to Transaction History (Screen 2) ---
+    document.querySelector('#screen1 .view-link')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      showScreen('screen2');
+    });
+
+    // --- Back links ---
+    document.querySelectorAll('.back-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const text = this.textContent.trim();
+        if (text.includes('Points & Balance')) showScreen('screen1');
+        else if (text.includes('Transaction History')) showScreen('screen2');
+        else if (text.includes('Adjustment History')) showScreen('screen6');
+      });
+    });
+
+    // --- Table row clicks on Screen 2 → Transaction Detail (Screen 3) ---
+    document.querySelectorAll('#screen2 .table tbody tr').forEach(row => {
+      row.addEventListener('click', function() {
+        showScreen('screen3');
+      });
+    });
+
+    // --- Table row clicks on Screen 6 → Admin Detail (Screen 7) ---
+    document.querySelectorAll('#screen6 .table tbody tr').forEach(row => {
+      row.addEventListener('click', function() {
+        showScreen('screen7');
+      });
+    });
+
+    // --- Tabs on Screen 4: "Adjustments" (active) / "Adjustment History" ---
+    document.querySelectorAll('#screen4 .tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const text = this.textContent.trim();
+        if (text === 'Adjustment History') showScreen('screen6');
+      });
+    });
+
+    // --- Tabs on Screen 6: "Adjustments" / "Adjustment History" (active) ---
+    document.querySelectorAll('#screen6 .tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const text = this.textContent.trim();
+        if (text === 'Adjustments') showScreen('screen4');
+      });
+    });
+
+    // --- "Adjust" buttons on Screen 4 → open Modal (Screen 5) ---
+    document.querySelectorAll('#screen4 .btn-primary.btn-sm').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showScreen('screen5');
+      });
+    });
+
+    // --- Modal close (X) and Cancel on Screen 5 → back to Screen 4 ---
+    document.querySelector('#screen5 .modal-close')?.addEventListener('click', function() {
+      showScreen('screen4');
+    });
+    document.querySelector('#screen5 .btn-secondary')?.addEventListener('click', function() {
+      showScreen('screen4');
+    });
+
+    // --- "Apply Adjustment" on Screen 5 → back to Screen 4 with brief feedback ---
+    document.querySelector('#screen5 .btn-primary')?.addEventListener('click', function() {
+      showScreen('screen4');
+    });
+
+    // --- Sidebar nav items: wire up navigation ---
+    document.querySelectorAll('.screen').forEach(screen => {
+      screen.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const text = this.textContent.trim();
+          if (text === 'Points & Balance') showScreen('screen1');
+          else if (text === 'Point Adjustments') showScreen('screen4');
+          // Other sidebar items are outside scope but mark as active visually
+          const sidebar = this.closest('.sidebar');
+          sidebar.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+
+    // --- Dynamic balance preview in the modal (Screen 5) ---
+    (function() {
+      const screen5 = document.getElementById('screen5');
+      if (!screen5) return;
+      const amountInput = screen5.querySelector('input[type="number"]');
+      const addRadio = screen5.querySelector('#add');
+      const removeRadio = screen5.querySelector('#remove');
+      const previewValue = screen5.querySelector('.preview-value');
+      const currentBalance = 1250;
+
+      function updatePreview() {
+        const amount = parseInt(amountInput.value) || 0;
+        const isAdd = addRadio.checked;
+        const newBalance = isAdd ? currentBalance + amount : currentBalance - amount;
+        previewValue.textContent = newBalance.toLocaleString() + ' points';
+      }
+
+      if (amountInput) amountInput.addEventListener('input', updatePreview);
+      if (addRadio) addRadio.addEventListener('change', updatePreview);
+      if (removeRadio) removeRadio.addEventListener('change', updatePreview);
+    })();
+
+    // --- Pagination: visual active toggle ---
+    document.querySelectorAll('.pagination').forEach(pag => {
+      pag.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          pag.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
