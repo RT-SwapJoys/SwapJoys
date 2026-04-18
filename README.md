@@ -1,7 +1,7 @@
 # SwapJoys Platform MVP
 
 ![SwapJoys](https://img.shields.io/badge/SwapJoys-Platform-6366f1)
-![Version](https://img.shields.io/badge/version-1.5.0--M6-blue)
+![Version](https://img.shields.io/badge/version-1.6.0--M7-blue)
 ![Status](https://img.shields.io/badge/status-In%20Development-yellow)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
@@ -166,7 +166,15 @@ SwapJoys/
 │   └── Documents/
 │       ├── Release-Notes-M6.md
 │       └── Task-Report-M6.pdf
-├── Milestone 7/                    # Admin & Tax Part 1 (Next)
+├── Milestone 7/                    # Admin Dashboard & Tax Module Part 1
+│   ├── Deliverables/
+│   │   ├── Htmlcss design templates.html
+│   │   ├── Platform Flow Diagram - Admin Dashboard & Tax Module Part 1.md
+│   │   ├── User Journey Map.md
+│   │   └── Wireframes.md
+│   └── Documents/
+│       ├── Release-Notes-M7.md
+│       └── Task-Report-M7.pdf
 ├── Milestone 8/                    # Tax Part 2 & Launch (Coming)
 └── README.md
 ```
@@ -183,8 +191,8 @@ SwapJoys/
 | **M4** | 7-8 | 2 weeks | Experience Creation, Marketplace | ✅ Complete |
 | **M5** | 9-10 | 2 weeks | Booking, QR Verification, Status | ✅ Complete |
 | **M6** | 11-12 | 2 weeks | Points System, Balance, Override | ✅ Complete |
-| **M7** | 13-14 | 2 weeks | Admin Dashboard, Tax Part 1 | 🔄 Next |
-| **M8** | 15-16 | 2 weeks | Tax Part 2, Subscription, Launch | ⏳ Planned |
+| **M7** | 13-14 | 2 weeks | Admin Dashboard, Tax Part 1 | ✅ Complete |
+| **M8** | 15-16 | 2 weeks | Tax Part 2, Subscription, Launch | 🔄 Next |
 | **M9** | TBD | TBD | Stripe Integration + Final QA | ⏳ Planned |
 
 **Total Timeline:** 16+ weeks | 8+ Milestones | 21 Features
@@ -254,6 +262,17 @@ The following features were delivered beyond the original M6 scope:
 | Book a Demo Modal | 10-minute demo booking modal on landing page with form fields and submission flow |
 | Multi-Language Support (NO/EN) | Full English/Norwegian language support updates for all M6 screens |
 | Mobile & Tablet Responsive Design | Home screens, landing page, dashboard, and sidebar optimized for mobile phones and tablets |
+
+---
+
+## Milestone 7 — Additional Delivered
+
+The following features were delivered beyond the original M7 scope:
+
+| Feature | Description |
+|---------|-------------|
+| Multi-Language Support for M7 | Complete English/Norwegian translations for all new M7 pages (Admin Dashboard, Admin Companies, Admin Experiences, Admin Usage Logs with 4 tabs, Tax Reports) |
+| VAT Invoice Plan - Design Deliverables | Complete design package for the future VAT/Invoicing module based on client's scope clarification request (10 HTML/CSS interactive screens, wireframes, user journey map, and platform flow diagram covering Register Sale, Use Points, Norwegian-compliant PDF invoice, Invoice Archive, Swap Ledger with VAT, and Accounting Export) |
 
 ---
 
