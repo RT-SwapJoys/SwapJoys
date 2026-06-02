@@ -2,6 +2,7 @@
 
 ![SwapJoys](https://img.shields.io/badge/SwapJoys-Platform-6366f1)
 ![Version](https://img.shields.io/badge/version-1.6.0--M7-blue)
+![Small Adjustment](https://img.shields.io/badge/latest-1.6.1--Pre--M8-blue)
 ![Status](https://img.shields.io/badge/status-In%20Development-yellow)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
 
@@ -176,6 +177,9 @@ SwapJoys/
 │       ├── Release-Notes-M7.md
 │       └── Task-Report-M7.pdf
 ├── Milestone 8/                    # Tax Part 2 & Launch (Coming)
+│   └── Small Adjustment/           # Pre-M8 Credits Rename & Hero Refresh (v1.6.1)
+│       ├── README.md
+│       └── Report N008-SA.pdf
 └── README.md
 ```
 
@@ -196,6 +200,8 @@ SwapJoys/
 | **M9** | TBD | TBD | Stripe Integration + Final QA | ⏳ Planned |
 
 **Total Timeline:** 16+ weeks | 8+ Milestones | 21 Features
+
+> A pre-Milestone 8 "Small Adjustment" release (v1.6.1) was delivered on June 1, 2026 covering the Points → Credits rename, homepage hero refresh, and translation parity audit. See the "Pre-Milestone 8 — Small Adjustments Delivered" section below for the full list.
 
 ---
 
@@ -273,6 +279,25 @@ The following features were delivered beyond the original M7 scope:
 |---------|-------------|
 | Multi-Language Support for M7 | Complete English/Norwegian translations for all new M7 pages (Admin Dashboard, Admin Companies, Admin Experiences, Admin Usage Logs with 4 tabs, Tax Reports) |
 | VAT Invoice Plan - Design Deliverables | Complete design package for the future VAT/Invoicing module based on client's scope clarification request (10 HTML/CSS interactive screens, wireframes, user journey map, and platform flow diagram covering Register Sale, Use Points, Norwegian-compliant PDF invoice, Invoice Archive, Swap Ledger with VAT, and Accounting Export) |
+
+---
+
+## Pre-Milestone 8 — Small Adjustments Delivered
+
+The following pre-Milestone 8 adjustments were delivered as the v1.6.1 release (June 1, 2026) ahead of full M8 development. All M1-M7 features remain unchanged in behavior:
+
+| Feature | Description |
+|---------|-------------|
+| Points → Credits Rename (English) | Full UI rename of "Points" / "points" / "Point" / "point" to "Credits" / "credits" / "Credit" / "credit" across all en.json values (100+ value updates across 14 sections); JSON keys preserved for component stability |
+| Poeng → Kreditter Rename (Norwegian) | Full Norwegian rename in no.json with linguistically correct compound forms (Kredittsaldo, Kredittkostnad, Kredittjusteringer, Kreditt-transaksjoner, kredittbasert, kampanjekreditter) |
+| Homepage Hero Refresh | Updated hero headline ("Swap experiences") and bilingual description copy to reflect the new "local employee experience network" positioning; removed unused titleLight and tagline keys |
+| "No Extra Cost" Wording Removal | Removed "at no extra cost" wording from the landing hero and "without additional company cost" / "uten ekstra kostnad" wording from the How It Works Step 3 description in both English and Norwegian |
+| Hero Visual Polish | Headline size increased from 46px to 58px, new brand-blue to brand-orange gradient accent underline, description wrapped in a callout box with brand-blue left border and gradient background, refined responsive breakpoints for tablet (<900px), mobile (<600px), and small mobile (<380px) |
+| Landing.tsx Hardcoded Text Update | Updated legacy hardcoded copy: "50 Welcome Points" → "50 Welcome Credits", "Balance: 50 Points" → "Balance: 50 Credits", "Your exchange points" → "Your exchange credits", "Available Points" → "Available Credits", "points-based system" → "credits-based system" |
+| Translation Parity Audit | Verified en.json and no.json have identical 1,036-key structure (34 sections each), all 922 unique t() references resolve cleanly, zero missing keys, zero hardcoded Points/Poeng text remaining in visible .tsx files |
+| Database & Route Stability Preserved | `point_cost` database column, `/points` route paths, and JSON translation key names intentionally preserved to avoid breaking existing bookmarks, data, or component bindings (visual rename only) |
+| Production Build & Deployment | Docker frontend image rebuilt and deployed to the production server with the refreshed Credits terminology and hero visuals live |
+| Release Notes | Version 1.6.1 release notes published documenting all rename, hero, audit, and removal changes |
 
 ---
 
